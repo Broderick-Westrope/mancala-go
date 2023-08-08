@@ -13,17 +13,26 @@ func main() {
 
 	flag.Parse()
 
+	err := run(addr)
+	if err != nil {
+		log.Fatal().Err(err).Send()
+	}
+}
+
+func run(address *string) error {
 	router := chi.NewRouter()
 
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		_, err := w.Write([]byte("PLACEHOLDER"))
 		if err != nil {
-			log.Error().Err(err).Msg("")
+			log.Err(err).Send()
 		}
 	})
 
-	err := http.ListenAndServe(*addr, router)
+	err := http.ListenAndServe(*address, router)
 	if err != nil {
-		log.Err(err)
+		return err
 	}
+
+	return nil
 }
