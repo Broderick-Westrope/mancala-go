@@ -5,9 +5,14 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/rs/zerolog/log"
+	flag "github.com/spf13/pflag"
 )
 
 func main() {
+	addr := flag.StringP("addr", "a", ":4000", "HTTP network address")
+
+	flag.Parse()
+
 	router := chi.NewRouter()
 
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
@@ -17,7 +22,7 @@ func main() {
 		}
 	})
 
-	err := http.ListenAndServe(":4000", router)
+	err := http.ListenAndServe(*addr, router)
 	if err != nil {
 		log.Err(err)
 	}
