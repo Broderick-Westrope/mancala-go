@@ -58,3 +58,11 @@ func (side *BoardSide) ArePitsEmpty() bool {
 
 	return true
 }
+
+func (side *BoardSide) GetScore() int {
+	var score int
+	for _, pit := range side.Pits {
+		score += pit
+	}
+	return score + side.Store
+}
