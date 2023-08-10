@@ -48,3 +48,13 @@ func (side *BoardSide) ExecuteMove(pitIndex int) (int, bool) {
 		return 0, false
 	}
 }
+
+func (side *BoardSide) ArePitsEmpty() bool {
+	for _, pit := range side.Pits {
+		if pit > 0 {
+			return false
+		}
+	}
+
+	return true
+}
