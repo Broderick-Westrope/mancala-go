@@ -4,12 +4,27 @@ import (
 	"testing"
 
 	"github.com/Broderick-Westrope/mancala-go/internal/mancala"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestNewPlayer(t *testing.T) {
-	player := mancala.NewPlayer("Test Name 1")
+	tests := []struct {
+		name          string
+		playerName    string
+		expectedName  string
+		expectedScore int
+	}{
+		{"Valid name, valid score", "Test Name 1", "Test Name 1", 0},
+	}
 
-	assert.Equal(t, player.Name, "Test Name 1")
-	assert.Equal(t, player.Score, 0)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ans := mancala.NewPlayer(tt.playerName)
+			if ans.Name != tt.expectedName {
+				t.Errorf("got %s, want %s", ans.Name, tt.expectedName)
+			}
+			if ans.Score != tt.expectedScore {
+				t.Errorf("got %d, want %d", ans.Score, tt.expectedScore)
+			}
+		})
+	}
 }
