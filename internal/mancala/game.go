@@ -9,9 +9,42 @@ type Game struct {
 func (g *Game) ExecuteMove(pitIndex int) {
 	ValidatePitIndex(pitIndex)
 
+	// Get correct board side
+	var currentSide *BoardSide
 	if g.Turn == Player1Turn {
-		g.Side1.ExecuteMove(pitIndex)
+		currentSide = g.Side1
 	} else {
-		g.Side2.ExecuteMove(pitIndex)
+		currentSide = g.Side2
+	}
+
+	var stones int
+	var extraTurn bool
+	// Do while there are stones left to distribute
+	for i := true; i; i = stones > 0 {
+		stones, extraTurn = currentSide.ExecuteMove(pitIndex)
+
+		// If we have finished distributing stones
+		if stones <= 0 {
+			// If they don't get to take another turn, alternate the turn
+			if !extraTurn {
+				g.AlternateTurn()
+			}
+			break
+		}
+
+		// Else, we need to distribute the remaining stones on the other side
+		if g.Turn == Player1Turn {
+			currentSide = g.Side2
+		} else {
+			currentSide = g.Side1
+		}
+	}
+}
+
+func (g *Game) AlternateTurn() {
+	if g.Turn == Player1Turn {
+		g.Turn = Player2Turn
+	} else {
+		g.Turn = Player1Turn
 	}
 }
