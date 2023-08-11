@@ -51,97 +51,6 @@ func TestNewBoardSide(t *testing.T) {
 	}
 }
 
-func TestBoardSide_DistributeStones(t *testing.T) {
-	tests := []struct {
-		name                 string
-		side                 *mancala.BoardSide
-		pitIndex             int
-		stones               int
-		expectedPits         []int
-		expectedStore        int
-		expectedStonesLeft   int
-		expectedAnotherTurn  bool
-		expectedCaptureIndex int
-	}{
-		{
-			"Distribute none",
-			&mancala.BoardSide{
-				Player: mancala.NewPlayer("Test Name 1"),
-				Pits:   []int{0, 4, 4, 4, 4, 4},
-				Store:  1,
-			},
-			0, 0,
-			[]int{0, 4, 4, 4, 4, 4},
-			1, 0, false, -1,
-		},
-		{
-			"Ending on players pit",
-			&mancala.BoardSide{
-				Player: mancala.NewPlayer("Test Name 1"),
-				Pits:   []int{4, 0, 4, 4, 4, 4},
-				Store:  1,
-			},
-			2, 4,
-			[]int{4, 0, 5, 5, 5, 5},
-			1, 0, false, -1,
-		},
-		{
-			"Ending on players store",
-			&mancala.BoardSide{
-				Player: mancala.NewPlayer("Test Name 1"),
-				Pits:   []int{4, 4, 0, 4, 4, 4},
-				Store:  1,
-			},
-			3, 4,
-			[]int{4, 4, 0, 5, 5, 5},
-			2, 0, true, -1,
-		},
-		{
-			"Ending on opponents side",
-			&mancala.BoardSide{
-				Player: mancala.NewPlayer("Test Name 1"),
-				Pits:   []int{4, 4, 4, 4, 0, 4},
-				Store:  1,
-			},
-			5, 4,
-			[]int{4, 4, 4, 4, 0, 5},
-			2, 2, false, -1,
-		},
-		{
-			"Perform a capture",
-			&mancala.BoardSide{
-				Player: mancala.NewPlayer("Test Name 1"),
-				Pits:   []int{4, 0, 4, 4, 0, 4},
-				Store:  1,
-			},
-			2, 3,
-			[]int{4, 0, 5, 5, 0, 4},
-			2, 0, false, 1,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			ansStonesLeft, ansAnotherTurn, ansCaptureIndex := tt.side.DistributeStones(tt.pitIndex, tt.stones)
-			if !reflect.DeepEqual(tt.side.Pits, tt.expectedPits) {
-				t.Errorf("Pits: got %v, want %v", tt.side.Pits, tt.expectedPits)
-			}
-			if tt.side.Store != tt.expectedStore {
-				t.Errorf("Store: got %v, want %v", tt.side.Store, tt.expectedStore)
-			}
-			if ansStonesLeft != tt.expectedStonesLeft {
-				t.Errorf("Stones Left: got %v, want %v", ansStonesLeft, tt.expectedStonesLeft)
-			}
-			if ansAnotherTurn != tt.expectedAnotherTurn {
-				t.Errorf("Another Turn: got %v, want %v", ansAnotherTurn, tt.expectedAnotherTurn)
-			}
-			if ansCaptureIndex != tt.expectedCaptureIndex {
-				t.Errorf("Capture Index: got %v, want %v", ansCaptureIndex, tt.expectedCaptureIndex)
-			}
-		})
-	}
-}
-
 func TestBoardSide_GetStones(t *testing.T) {
 	tests := []struct {
 		name               string
@@ -280,6 +189,42 @@ func TestBoardSide_Capture(t *testing.T) {
 			if tt.side.Pits[tt.captureIndex] != 0 {
 				t.Errorf("got %v, want %d", tt.side.Pits[tt.captureIndex], 0)
 			}
+		})
+	}
+}
+
+func TestBoardSide_GetOpposingPitIndex(t *testing.T) {
+	tests := []struct {
+		name          string
+		side          *mancala.BoardSide
+		pitIndex      int
+		expectedIndex int
+	}{
+		{
+			"Index 0, 6 pits",
+			&mancala.BoardSide{
+				Pits: []int{1, 0, 7, 5, 9, 12},
+			},
+			0, 5,
+		},
+		{
+			"Index 1, 12 pits",
+			&mancala.BoardSide{
+				Pits: []int{1, 0, 7, 5, 9, 12, 1, 0, 7, 5, 9, 12},
+			},
+			1, 10,
+		},
+		{
+			"Index 2, 4 pits",
+			&mancala.BoardSide{
+				Pits: []int{1, 0, 7, 5},
+			},
+			2, 1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			checkEquals(t, "Opposing Pit Index", tt.side.GetOpposingPitIndex(tt.pitIndex), tt.expectedIndex)
 		})
 	}
 }
