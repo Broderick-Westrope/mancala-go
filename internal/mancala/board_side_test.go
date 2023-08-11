@@ -51,7 +51,7 @@ func TestNewBoardSide(t *testing.T) {
 	}
 }
 
-func TestExecuteMove(t *testing.T) {
+func TestBoardSide_ExecuteMove(t *testing.T) {
 	tests := []struct {
 		name                 string
 		side                 *mancala.BoardSide
@@ -141,7 +141,7 @@ func TestExecuteMove(t *testing.T) {
 	}
 }
 
-func TestArePitsEmpty(t *testing.T) {
+func TestBoardSide_ArePitsEmpty(t *testing.T) {
 	tests := []struct {
 		name          string
 		player        *mancala.Player
@@ -177,7 +177,7 @@ func TestArePitsEmpty(t *testing.T) {
 	}
 }
 
-func TestGetScore(t *testing.T) {
+func TestBoardSide_GetScore(t *testing.T) {
 	tests := []struct {
 		name          string
 		player        *mancala.Player
@@ -214,7 +214,7 @@ func TestGetScore(t *testing.T) {
 	}
 }
 
-func TestCapture(t *testing.T) {
+func TestBoardSide_Capture(t *testing.T) {
 	tests := []struct {
 		name                   string
 		player                 *mancala.Player
