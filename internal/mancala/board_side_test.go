@@ -37,9 +37,7 @@ func TestNewBoardSide(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			mancala.StonesPerPit = tt.stonesPerPit
-			mancala.PitsPerSide = tt.pitsPerSide
-			ans := mancala.NewBoardSide(tt.player)
+			ans := mancala.NewBoardSide(tt.player, tt.stonesPerPit, tt.pitsPerSide)
 			if *ans.Player != *tt.expectedPlayer {
 				t.Errorf("got %v, want %v", ans.Player, tt.expectedPlayer)
 			}
@@ -80,9 +78,7 @@ func TestArePitsEmpty(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			mancala.StonesPerPit = tt.stonesPerPit
-			mancala.PitsPerSide = tt.pitsPerSide
-			side := mancala.NewBoardSide(tt.player)
+			side := mancala.NewBoardSide(tt.player, tt.stonesPerPit, tt.pitsPerSide)
 			ans := side.ArePitsEmpty()
 			if ans != tt.expectedEmpty {
 				t.Errorf("got %v, want %v", ans, tt.expectedEmpty)
@@ -117,7 +113,7 @@ func TestGetScore(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			side := mancala.NewBoardSide(tt.player)
+			side := mancala.NewBoardSide(tt.player, 4, 6)
 			side.Pits = tt.pits
 			side.Store = tt.store
 			ans := side.GetScore()
@@ -152,7 +148,7 @@ func TestCapture(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			side := mancala.NewBoardSide(tt.player)
+			side := mancala.NewBoardSide(tt.player, 4, 6)
 			side.Pits = tt.pits
 			ans := side.Capture(tt.captureIndex)
 			if ans != tt.expectedCapturedStones {
