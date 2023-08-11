@@ -15,6 +15,33 @@ func TestGame_ExecuteMove(t *testing.T) {
 		expectedAnErr bool
 	}{
 		{
+			name: "Invalid pit index",
+			game: &mancala.Game{
+				Side1: &mancala.BoardSide{
+					Pits:  []int{4, 0, 4, 4, 4, 4},
+					Store: 1,
+				},
+				Side2: &mancala.BoardSide{
+					Pits:  []int{4, 4, 4, 4, 4, 4},
+					Store: 1,
+				},
+				Turn: mancala.Player1Turn,
+			},
+			pitIndex: 9,
+			expectedGame: &mancala.Game{
+				Side1: &mancala.BoardSide{
+					Pits:  []int{4, 0, 4, 4, 4, 4},
+					Store: 1,
+				},
+				Side2: &mancala.BoardSide{
+					Pits:  []int{4, 4, 4, 4, 4, 4},
+					Store: 1,
+				},
+				Turn: mancala.Player1Turn,
+			},
+			expectedAnErr: true,
+		},
+		{
 			name: "Chosen pit is empty",
 			game: &mancala.Game{
 				Side1: &mancala.BoardSide{
@@ -195,6 +222,32 @@ func TestGame_ExecuteMove(t *testing.T) {
 					Store: 3,
 				},
 				Turn: mancala.Player2Turn,
+			},
+		},
+		{
+			name: "Player 2: Move ending on players pit",
+			game: &mancala.Game{
+				Side1: &mancala.BoardSide{
+					Pits:  []int{4, 4, 4, 4, 4, 4},
+					Store: 2,
+				},
+				Side2: &mancala.BoardSide{
+					Pits:  []int{4, 4, 4, 4, 4, 4},
+					Store: 2,
+				},
+				Turn: mancala.Player2Turn,
+			},
+			pitIndex: 0,
+			expectedGame: &mancala.Game{
+				Side1: &mancala.BoardSide{
+					Pits:  []int{4, 4, 4, 4, 4, 4},
+					Store: 2,
+				},
+				Side2: &mancala.BoardSide{
+					Pits:  []int{0, 5, 5, 5, 5, 4},
+					Store: 2,
+				},
+				Turn: mancala.Player1Turn,
 			},
 		},
 	}
