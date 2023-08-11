@@ -217,35 +217,30 @@ func TestBoardSide_GetScore(t *testing.T) {
 func TestBoardSide_Capture(t *testing.T) {
 	tests := []struct {
 		name                   string
-		player                 *mancala.Player
-		pits                   []int
+		side                   *mancala.BoardSide
 		captureIndex           int
 		expectedCapturedStones int
 	}{
 		{
 			"Capture 5 stones, index 3",
-			mancala.NewPlayer("Test Name 1"),
-			[]int{1, 0, 7, 5, 9, 12},
+			&mancala.BoardSide{Pits: []int{1, 0, 7, 5, 9, 12}},
 			3, 5,
 		},
 		{
 			"Capture 9 stones, index 4",
-			mancala.NewPlayer("Test Name 1"),
-			[]int{1, 0, 7, 5, 9, 12},
+			&mancala.BoardSide{Pits: []int{1, 0, 7, 5, 9, 12}},
 			4, 9,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			side := mancala.NewBoardSide(tt.player, 4, 6)
-			side.Pits = tt.pits
-			ans := side.Capture(tt.captureIndex)
+			ans := tt.side.Capture(tt.captureIndex)
 			if ans != tt.expectedCapturedStones {
 				t.Errorf("got %v, want %v", ans, tt.expectedCapturedStones)
 			}
-			if side.Pits[tt.captureIndex] != 0 {
-				t.Errorf("got %v, want %d", side.Pits[tt.captureIndex], 0)
+			if tt.side.Pits[tt.captureIndex] != 0 {
+				t.Errorf("got %v, want %d", tt.side.Pits[tt.captureIndex], 0)
 			}
 		})
 	}
