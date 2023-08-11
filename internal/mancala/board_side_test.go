@@ -51,6 +51,96 @@ func TestNewBoardSide(t *testing.T) {
 	}
 }
 
+func TestExecuteMove(t *testing.T) {
+	tests := []struct {
+		name                 string
+		side                 *mancala.BoardSide
+		pitIndex             int
+		expectedPits         []int
+		expectedStore        int
+		expectedStonesLeft   int
+		expectedAnotherTurn  bool
+		expectedCaptureIndex int
+	}{
+		{
+			"Chosen pit is empty",
+			&mancala.BoardSide{
+				Player: mancala.NewPlayer("Test Name 1"),
+				Pits:   []int{0, 4, 4, 4, 4, 4},
+				Store:  1,
+			},
+			0,
+			[]int{0, 4, 4, 4, 4, 4},
+			1, 0, true, -1,
+		},
+		{
+			"Move ending on players pit",
+			&mancala.BoardSide{
+				Player: mancala.NewPlayer("Test Name 1"),
+				Pits:   []int{4, 4, 4, 4, 4, 4},
+				Store:  1,
+			},
+			1,
+			[]int{4, 0, 5, 5, 5, 5},
+			1, 0, false, -1,
+		},
+		{
+			"Move ending on players store",
+			&mancala.BoardSide{
+				Player: mancala.NewPlayer("Test Name 1"),
+				Pits:   []int{4, 4, 4, 4, 4, 4},
+				Store:  1,
+			},
+			2,
+			[]int{4, 4, 0, 5, 5, 5},
+			2, 0, true, -1,
+		},
+		{
+			"Move ending on opponents side",
+			&mancala.BoardSide{
+				Player: mancala.NewPlayer("Test Name 1"),
+				Pits:   []int{4, 4, 4, 4, 4, 4},
+				Store:  1,
+			},
+			4,
+			[]int{4, 4, 4, 4, 0, 5},
+			2, 2, false, -1,
+		},
+		{
+			"Perform a capture",
+			&mancala.BoardSide{
+				Player: mancala.NewPlayer("Test Name 1"),
+				Pits:   []int{4, 3, 4, 4, 0, 4},
+				Store:  1,
+			},
+			1,
+			[]int{4, 0, 5, 5, 0, 4},
+			2, 0, false, 1,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ansStonesLeft, ansAnotherTurn, ansCaptureIndex := tt.side.ExecuteMove(tt.pitIndex)
+			if !reflect.DeepEqual(tt.side.Pits, tt.expectedPits) {
+				t.Errorf("Pits: got %v, want %v", tt.side.Pits, tt.expectedPits)
+			}
+			if tt.side.Store != tt.expectedStore {
+				t.Errorf("Store: got %v, want %v", tt.side.Store, tt.expectedStore)
+			}
+			if ansStonesLeft != tt.expectedStonesLeft {
+				t.Errorf("Stones Left: got %v, want %v", ansStonesLeft, tt.expectedStonesLeft)
+			}
+			if ansAnotherTurn != tt.expectedAnotherTurn {
+				t.Errorf("Another Turn: got %v, want %v", ansAnotherTurn, tt.expectedAnotherTurn)
+			}
+			if ansCaptureIndex != tt.expectedCaptureIndex {
+				t.Errorf("Capture Index: got %v, want %v", ansCaptureIndex, tt.expectedCaptureIndex)
+			}
+		})
+	}
+}
+
 func TestArePitsEmpty(t *testing.T) {
 	tests := []struct {
 		name          string
