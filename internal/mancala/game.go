@@ -1,5 +1,9 @@
 package mancala
 
+import (
+	"fmt"
+)
+
 type Game struct {
 	Side1 *BoardSide
 	Side2 *BoardSide
@@ -19,52 +23,63 @@ func NewGame(player1 *Player, player2 *Player, stonesPerPit int, pitsPerSide int
 	}
 }
 
-func (g *Game) ExecuteMove(pitIndex int) {
+func (g *Game) ExecuteMove(pitIndex int) error {
 	// Get correct board side
-	var currentSide *BoardSide
+	var currentSide, opposingSide *BoardSide
 	if g.Turn == Player1Turn {
 		currentSide = g.Side1
+		opposingSide = g.Side2
 	} else {
 		currentSide = g.Side2
+		opposingSide = g.Side1
 	}
+	turnSide := currentSide
 
+	// Get stones from pit
 	currentSide.ValidatePitIndex(pitIndex)
-
-	var stones, captureIndex int
-	var extraTurn bool
-	// Do while there are stones left to distribute
-	for i := true; i; i = stones > 0 {
-		stones := currentSide.GetStones(pitIndex)
-		stones, extraTurn, captureIndex = currentSide.DistributeStones(pitIndex+1, stones)
-
-		// If we have finished distributing stones
-		if stones <= 0 {
-			// If they get to capture
-			if captureIndex >= 0 {
-				// Get the other board side
-				var otherSide *BoardSide
-				if g.Turn == Player1Turn {
-					otherSide = g.Side2
-				} else {
-					otherSide = g.Side1
-				}
-				// Add captured stones to store
-				currentSide.Store += otherSide.Capture(captureIndex)
-			}
-			// If they don't get to take another turn, alternate the turn
-			if !extraTurn {
-				g.AlternateTurn()
-			}
-			break
-		}
-
-		// Else, we need to distribute the remaining stones on the other side
-		if g.Turn == Player1Turn {
-			currentSide = g.Side2
-		} else {
-			currentSide = g.Side1
-		}
+	stones := currentSide.GetStones(pitIndex)
+	if stones == 0 {
+		return fmt.Errorf("pit %d is empty", pitIndex)
 	}
+
+	// Distribute stones
+	pitCount := len(currentSide.Pits)
+	pitIndex++
+	for stones > 0 {
+		// TODO: try to use pitIndex++ instead of pitIndex = pitIndex + 1
+		for i := pitIndex; i < pitCount && stones > 0; i++ {
+			currentSide.Pits[i]++
+			stones--
+
+			if currentSide == turnSide && stones == 0 && currentSide.Pits[i] == 1 {
+				// Perform capture
+				currentSide.Store += currentSide.Capture(i)
+				currentSide.Store += opposingSide.Capture(currentSide.GetOpposingPitIndex(i))
+				g.AlternateTurn()
+				return nil
+			}
+		}
+
+		if stones > 0 && currentSide == turnSide {
+			currentSide.Store++
+			stones--
+			// If last stone lands in players store, they get another turn
+			if stones == 0 {
+				return nil
+			}
+		}
+
+		if stones < 0 {
+			return fmt.Errorf("stones is negative: %d", stones)
+		}
+
+		// Switch sides and continue distributing
+		currentSide, opposingSide = opposingSide, currentSide
+		pitIndex = 0
+	}
+
+	g.AlternateTurn()
+	return nil
 }
 
 func (g *Game) AlternateTurn() {
