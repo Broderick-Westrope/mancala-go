@@ -1,2 +1,3 @@
 go get ./...
 go install github.com/cosmtrek/air@latest
+go install github.com/go-delve/delve/cmd/dlv@v1.21.0
