@@ -144,32 +144,35 @@ func TestBoardSide_ExecuteMove(t *testing.T) {
 func TestBoardSide_ArePitsEmpty(t *testing.T) {
 	tests := []struct {
 		name          string
-		player        *mancala.Player
-		stonesPerPit  int
-		pitsPerSide   int
+		side          *mancala.BoardSide
 		expectedEmpty bool
 	}{
 		{
 			"4 stones, 6 pits, not empty",
-			mancala.NewPlayer("Test Name 1"),
-			4, 6, false,
+			&mancala.BoardSide{
+				Pits: []int{4, 4, 4, 4, 4, 4},
+			},
+			false,
 		},
 		{
 			"0 stones, 6 pits, empty",
-			mancala.NewPlayer("Test Name 1"),
-			0, 6, true,
+			&mancala.BoardSide{
+				Pits: []int{0, 0, 0, 0, 0, 0},
+			},
+			true,
 		},
 		{
-			"6 stones, 0 pits, empty",
-			mancala.NewPlayer("Test Name 1"),
-			6, 0, true,
+			"0 pits, empty",
+			&mancala.BoardSide{
+				Pits: []int{},
+			},
+			true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			side := mancala.NewBoardSide(tt.player, tt.stonesPerPit, tt.pitsPerSide)
-			ans := side.ArePitsEmpty()
+			ans := tt.side.ArePitsEmpty()
 			if ans != tt.expectedEmpty {
 				t.Errorf("got %v, want %v", ans, tt.expectedEmpty)
 			}
