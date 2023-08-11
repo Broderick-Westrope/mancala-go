@@ -180,33 +180,31 @@ func TestBoardSide_ArePitsEmpty(t *testing.T) {
 func TestBoardSide_GetScore(t *testing.T) {
 	tests := []struct {
 		name          string
-		player        *mancala.Player
-		pits          []int
-		store         int
+		side          *mancala.BoardSide
 		expectedScore int
 	}{
 		{
 			"5 pits, 1 stone each, 6 in store",
-			mancala.NewPlayer("Test Name 1"),
-			[]int{1, 1, 1, 1, 1},
-			6,
+			&mancala.BoardSide{
+				Pits:  []int{1, 1, 1, 1, 1},
+				Store: 6,
+			},
 			11,
 		},
 		{
 			"8 pits, incremental stones, 0 in store",
-			mancala.NewPlayer("Test Name 1"),
-			[]int{1, 2, 3, 4, 5, 6, 7, 8},
-			0,
+			&mancala.BoardSide{
+				Pits:  []int{1, 2, 3, 4, 5, 6, 7, 8},
+				Store: 0,
+			},
+
 			36,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			side := mancala.NewBoardSide(tt.player, 4, 6)
-			side.Pits = tt.pits
-			side.Store = tt.store
-			ans := side.GetScore()
+			ans := tt.side.GetScore()
 			if ans != tt.expectedScore {
 				t.Errorf("got %v, want %v", ans, tt.expectedScore)
 			}
