@@ -214,3 +214,51 @@ func TestGame_ExecuteMove(t *testing.T) {
 		})
 	}
 }
+
+func TestNewGame(t *testing.T) {
+	tests := []struct {
+		name         string
+		player1      *mancala.Player
+		player2      *mancala.Player
+		stonesPerPit int
+		pitsPerSide  int
+	}{
+		{
+			name:         "Default game",
+			player1:      &mancala.Player{Name: "Player 1"},
+			player2:      &mancala.Player{Name: "Player 2"},
+			stonesPerPit: 4,
+			pitsPerSide:  6,
+		},
+		{
+			name:         "Preset scores",
+			player1:      &mancala.Player{Name: "Player 1", Score: 10},
+			player2:      &mancala.Player{Name: "Player 2", Score: 20},
+			stonesPerPit: 4,
+			pitsPerSide:  6,
+		},
+		{
+			name:         "Altered pits",
+			player1:      &mancala.Player{Name: "Player 1"},
+			player2:      &mancala.Player{Name: "Player 2"},
+			stonesPerPit: 6,
+			pitsPerSide:  10,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ans := mancala.NewGame(tt.player1, tt.player2, tt.stonesPerPit, tt.pitsPerSide)
+			if ans.Turn != mancala.Player1Turn {
+				t.Errorf("Turn: got %v, want %v", ans.Turn, mancala.Player1Turn)
+			}
+			checkEquals(t, "Player 1", ans.Side1.Player, tt.player1)
+			checkEquals(t, "Side 1 Pit Length", len(ans.Side1.Pits), tt.pitsPerSide)
+			checkEquals(t, "Side 1 Stones", ans.Side1.Pits[0], tt.stonesPerPit)
+			checkEquals(t, "Side 1 Store", ans.Side1.Store, 0)
+			checkEquals(t, "Player 2", ans.Side2.Player, tt.player2)
+			checkEquals(t, "Side 2 Pit Length", len(ans.Side2.Pits), tt.pitsPerSide)
+			checkEquals(t, "Side 2 Stones", ans.Side2.Pits[0], tt.stonesPerPit)
+			checkEquals(t, "Side 2 Store", ans.Side2.Store, 0)
+		})
+	}
+}
