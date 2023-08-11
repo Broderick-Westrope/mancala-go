@@ -36,7 +36,10 @@ func (g *Game) ExecuteMove(pitIndex int) error {
 	turnSide := currentSide
 
 	// Get stones from pit
-	currentSide.ValidatePitIndex(pitIndex)
+	err := currentSide.ValidatePitIndex(pitIndex)
+	if err != nil {
+		return err
+	}
 	stones := currentSide.GetStones(pitIndex)
 	if stones == 0 {
 		return fmt.Errorf("pit %d is empty", pitIndex)

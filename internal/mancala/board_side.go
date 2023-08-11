@@ -2,8 +2,6 @@ package mancala
 
 import (
 	"fmt"
-
-	"github.com/rs/zerolog/log"
 )
 
 type BoardSide struct {
@@ -50,10 +48,11 @@ func (side *BoardSide) Capture(pitIndex int) int {
 	return stones
 }
 
-func (side *BoardSide) ValidatePitIndex(pitIndex int) {
+func (side *BoardSide) ValidatePitIndex(pitIndex int) error {
 	if pitIndex < 0 || pitIndex >= len(side.Pits) {
-		log.Error().Msg(fmt.Sprintf("Invalid pit index: %d", pitIndex))
+		return fmt.Errorf("invalid pit index: %d", pitIndex)
 	}
+	return nil
 }
 
 func (side *BoardSide) GetStones(pitIndex int) int {
