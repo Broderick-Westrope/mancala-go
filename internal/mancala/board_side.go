@@ -29,8 +29,12 @@ func NewBoardSide(player *Player, stonesPerPit int, pitsPerSide int) *BoardSide 
 func (side *BoardSide) ExecuteMove(pitIndex int) (int, bool, int) {
 	side.ValidatePitIndex(pitIndex)
 
-	stones := side.Pits[pitIndex]
+	if side.Pits[pitIndex] == 0 {
+		log.Error().Msgf("Pit %d is empty", pitIndex)
+		return 0, true, -1
+	}
 
+	stones := side.Pits[pitIndex]
 	side.Pits[pitIndex] = 0
 
 	pitCount := len(side.Pits)
