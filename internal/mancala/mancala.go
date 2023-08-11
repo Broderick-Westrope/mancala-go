@@ -5,11 +5,6 @@ const (
 	Player2Turn = 2
 )
 
-// var (
-// 	StonesPerPit = 4
-// 	PitsPerSide  = 6
-// )
-
 func NewGame(player1 *Player, player2 *Player, stonesPerPit int, pitsPerSide int) *Game {
 	return &Game{
 		Side1: NewBoardSide(player1, stonesPerPit, pitsPerSide),
