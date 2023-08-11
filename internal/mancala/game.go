@@ -34,7 +34,8 @@ func (g *Game) ExecuteMove(pitIndex int) {
 	var extraTurn bool
 	// Do while there are stones left to distribute
 	for i := true; i; i = stones > 0 {
-		stones, extraTurn, captureIndex = currentSide.ExecuteMove(pitIndex)
+		stones := currentSide.GetStones(pitIndex)
+		stones, extraTurn, captureIndex = currentSide.DistributeStones(pitIndex+1, stones)
 
 		// If we have finished distributing stones
 		if stones <= 0 {
