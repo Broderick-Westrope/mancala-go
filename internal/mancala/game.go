@@ -85,7 +85,7 @@ func (g *Game) ExecuteMove(pitIndex int) error {
 func (g *Game) AlternateTurn() {
 	if g.Turn == Player1Turn {
 		g.Turn = Player2Turn
-	} else {
-		g.Turn = Player1Turn
+		return
 	}
+	g.Turn = Player1Turn
 }
