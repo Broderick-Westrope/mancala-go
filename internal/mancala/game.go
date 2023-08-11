@@ -7,8 +7,6 @@ type Game struct {
 }
 
 func (g *Game) ExecuteMove(pitIndex int) {
-	ValidatePitIndex(pitIndex)
-
 	// Get correct board side
 	var currentSide *BoardSide
 	if g.Turn == Player1Turn {
@@ -16,6 +14,8 @@ func (g *Game) ExecuteMove(pitIndex int) {
 	} else {
 		currentSide = g.Side2
 	}
+
+	currentSide.ValidatePitIndex(pitIndex)
 
 	var stones, captureIndex int
 	var extraTurn bool

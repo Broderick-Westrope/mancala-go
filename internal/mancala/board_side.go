@@ -1,6 +1,10 @@
 package mancala
 
-import "github.com/rs/zerolog/log"
+import (
+	"fmt"
+
+	"github.com/rs/zerolog/log"
+)
 
 type BoardSide struct {
 	Player *Player
@@ -8,14 +12,14 @@ type BoardSide struct {
 	Store  int
 }
 
-func NewBoardSide(player *Player) *BoardSide {
+func NewBoardSide(player *Player, stonesPerPit int, pitsPerSide int) *BoardSide {
 	side := &BoardSide{
 		Player: player,
 		Store:  0,
 	}
 
-	for i := 0; i < PitsPerSide; i++ {
-		side.Pits = append(side.Pits, StonesPerPit)
+	for i := 0; i < pitsPerSide; i++ {
+		side.Pits = append(side.Pits, stonesPerPit)
 	}
 
 	return side
@@ -23,19 +27,20 @@ func NewBoardSide(player *Player) *BoardSide {
 
 // Returns: the number of stones that were left over after the move, whether the player gets another turn, and the pit index the player is capturing from (-1 for no capture)
 func (side *BoardSide) ExecuteMove(pitIndex int) (int, bool, int) {
-	ValidatePitIndex(pitIndex)
+	side.ValidatePitIndex(pitIndex)
 
 	stones := side.Pits[pitIndex]
 
 	side.Pits[pitIndex] = 0
 
-	for i := pitIndex; i < PitsPerSide && stones > 0; i++ {
+	pitCount := len(side.Pits)
+	for i := (pitIndex + 1); i < pitCount && stones > 0; i++ {
 		// If one stone left and the next pit is empty, capture
 		if stones == 1 && side.Pits[i] == 0 {
 			// Add one for our stone
 			side.Store++
 			// Return the pit index (of the opponents board side) we want to capture from
-			return 0, false, (PitsPerSide - 1) - i
+			return 0, false, (pitCount - 1) - i
 		}
 
 		side.Pits[i]++
@@ -80,4 +85,10 @@ func (side *BoardSide) Capture(pitIndex int) int {
 	stones := side.Pits[pitIndex]
 	side.Pits[pitIndex] = 0
 	return stones
+}
+
+func (side *BoardSide) ValidatePitIndex(pitIndex int) {
+	if pitIndex < 0 || pitIndex >= len(side.Pits) {
+		log.Error().Msg(fmt.Sprintf("Invalid pit index: %d", pitIndex))
+	}
 }
