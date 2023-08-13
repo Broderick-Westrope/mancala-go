@@ -4,7 +4,7 @@ import (
 	"flag"
 	"net/http"
 
-	log "golang.org/x/exp/slog"
+	log "log/slog"
 )
 
 func main() {
