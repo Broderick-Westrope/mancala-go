@@ -1,6 +1,8 @@
 package keys
 
-import "github.com/charmbracelet/bubbles/key"
+import (
+	"github.com/charmbracelet/bubbles/key"
+)
 
 type KeyMap struct {
 	Up        key.Binding

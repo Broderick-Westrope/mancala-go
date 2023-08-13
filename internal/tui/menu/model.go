@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Broderick-Westrope/mancala-go/internal/tui/keys"
+	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
@@ -36,16 +38,16 @@ func (m Model) Init() tea.Cmd {
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		switch msg.String() {
-		case "up", "k":
+		switch {
+		case key.Matches(msg, keys.Keys.Up):
 			if m.cursor > 0 {
 				m.cursor--
 			}
-		case "down", "j":
+		case key.Matches(msg, keys.Keys.Down):
 			if m.cursor < len(m.options)-1 {
 				m.cursor++
 			}
-		case "enter":
+		case key.Matches(msg, keys.Keys.Submit):
 			switch m.cursor {
 			case 1:
 				return m, tea.Quit

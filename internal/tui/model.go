@@ -1,7 +1,9 @@
 package tui
 
 import (
+	"github.com/Broderick-Westrope/mancala-go/internal/tui/keys"
 	"github.com/Broderick-Westrope/mancala-go/internal/tui/menu"
+	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
@@ -29,9 +31,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		switch msg.String() {
-		case "esc", "q":
-			return m, tea.Quit
+		switch {
+		case key.Matches(msg, keys.Keys.ForceQuit):
+			cmd = tea.Quit
 		}
 	}
 
