@@ -3,10 +3,12 @@ package menu
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/Broderick-Westrope/mancala-go/internal/tui/keys"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type Model struct {
@@ -59,15 +61,21 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	s := fmt.Sprintf("Welcome to\n%s\n\n", m.title)
+	var s strings.Builder
 
+	s.WriteString(fmt.Sprintf("Welcome to\n%s\n\n", m.title))
+
+	var pararaphs []string
 	for i, option := range m.options {
-		cursor := " "
+		cursor, style := " ", NoStyle
+
 		if m.cursor == i {
+			style = Cyan
 			cursor = ">"
 		}
-		s += fmt.Sprintf("%s %s\n", cursor, option)
+		pararaphs = append(pararaphs, style(fmt.Sprintf("%s %s\n", cursor, option)))
 	}
+	s.WriteString(lipgloss.JoinVertical(lipgloss.Left, pararaphs...))
 
-	return s
+	return s.String()
 }
