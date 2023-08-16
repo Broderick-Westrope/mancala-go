@@ -2,10 +2,7 @@ module github.com/Broderick-Westrope/mancala-go
 
 go 1.21
 
-require (
-	github.com/charmbracelet/bubbletea v0.24.2
-	golang.org/x/exp v0.0.0-20230811145659-89c5cff77bcb
-)
+require github.com/charmbracelet/bubbletea v0.24.2
 
 require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
