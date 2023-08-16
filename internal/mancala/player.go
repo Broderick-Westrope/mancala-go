@@ -3,7 +3,6 @@ package mancala
 type Player interface {
 	GetName() string
 	GetScore() int
-	SetName(name string)
 	SetScore(score int)
 }
 
@@ -18,10 +17,6 @@ func (human *Human) GetName() string {
 
 func (human *Human) GetScore() int {
 	return human.Score
-}
-
-func (human *Human) SetName(name string) {
-	human.Name = name
 }
 
 func (human *Human) SetScore(score int) {
