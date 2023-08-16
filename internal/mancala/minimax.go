@@ -1,6 +1,8 @@
 package mancala
 
-import "math"
+import (
+	"math"
+)
 
 type MinimaxBot struct {
 	Name  string
@@ -36,7 +38,7 @@ func (bot *MinimaxBot) GetMove(game *Game) int {
 		minSide = game.Side1
 	}
 
-	sim := Game{
+	sim := &Game{
 		Side1: &BoardSide{
 			Store: maxSide.Store,
 			Pits:  maxSide.Pits,
@@ -48,7 +50,21 @@ func (bot *MinimaxBot) GetMove(game *Game) int {
 		Turn: game.Turn,
 	}
 
-	return sim.copy().getMove(math.MaxInt, game.Turn)
+	var index, value int
+
+	for i, pit := range sim.Side1.Pits {
+		if pit > 0 {
+			newSim := sim.copy()
+			newSim.ExecuteMove(i)
+			newValue := newSim.getMove(5, game.Turn)
+			if newValue > value {
+				index = i
+				value = newValue
+			}
+		}
+	}
+
+	return index
 }
 
 func (sim *Game) getMove(depth int, maximiser uint8) int {
@@ -82,9 +98,11 @@ func (sim *Game) copy() *Game {
 	newSim := &Game{
 		Side1: &BoardSide{
 			Store: sim.Side1.Store,
+			Pits:  make([]int, len(sim.Side1.Pits)),
 		},
 		Side2: &BoardSide{
 			Store: sim.Side1.Store,
+			Pits:  make([]int, len(sim.Side2.Pits)),
 		},
 		Turn: sim.Turn,
 	}

@@ -33,24 +33,16 @@ func main() {
 	switch *mode {
 	case "local":
 		var player1, player2 *mancala.Human
-		if *name1 != "" {
-			player1 = mancala.NewHuman(*name1)
-		} else {
-			player1 = mancala.NewHuman("Player 1")
-		}
-		if *name2 != "" {
-			player2 = mancala.NewHuman(*name2)
-		} else {
-			player2 = mancala.NewHuman("Player 2")
-		}
+		player1 = mancala.NewHuman(*name1)
+		player2 = mancala.NewHuman(*name2)
 		game = mancala.NewGame(player1, player2, *stones, *pits)
 	case "minimax":
 		var player1, player2 *mancala.MinimaxBot
 		player1 = mancala.NewMinimaxBot("Minimax Bot")
-		if *name2 != "" {
-			player2 = mancala.NewMinimaxBot(*name2)
+		if *name2 == "Player 2" {
+			player2 = mancala.NewMinimaxBot("Player")
 		} else {
-			player2 = mancala.NewMinimaxBot("Player 2")
+			player2 = mancala.NewMinimaxBot(*name2)
 		}
 		game = mancala.NewGame(player1, player2, *stones, *pits)
 	default:

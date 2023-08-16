@@ -24,6 +24,10 @@ func NewGame(player1 Player, player2 Player, stonesPerPit int, pitsPerSide int) 
 }
 
 func (g *Game) ExecuteMove(pitIndex int) error {
+	if g.IsOver() {
+		return fmt.Errorf("game is over")
+	}
+
 	// Get correct board side
 	var currentSide, opposingSide *BoardSide
 	if g.Turn == Player1Turn {
