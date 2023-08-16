@@ -5,14 +5,14 @@ import (
 )
 
 type BoardSide struct {
-	Player *Player
+	Player Player
 	Pits   []int
 	Store  int
 }
 
 func NewBoardSide(player *Player, stonesPerPit int, pitsPerSide int) *BoardSide {
 	side := &BoardSide{
-		Player: player,
+		Player: *player,
 		Store:  0,
 	}
 

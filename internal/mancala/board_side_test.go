@@ -10,26 +10,26 @@ import (
 func TestNewBoardSide(t *testing.T) {
 	tests := []struct {
 		name           string
-		player         *mancala.Player
+		player         mancala.Player
 		stonesPerPit   int
 		pitsPerSide    int
-		expectedPlayer *mancala.Player
+		expectedPlayer mancala.Player
 		expectedPits   []int
 		expectedStore  int
 	}{
 		{
 			"Valid player, 4 stones, 6 pits",
-			mancala.NewPlayer("Test Name 1"),
+			mancala.NewHuman("Test Name 1"),
 			4, 6,
-			mancala.NewPlayer("Test Name 1"),
+			mancala.NewHuman("Test Name 1"),
 			[]int{4, 4, 4, 4, 4, 4},
 			0,
 		},
 		{
 			"Valid player, 2 stones, 3 pits",
-			mancala.NewPlayer("Test Name 1"),
+			mancala.NewHuman("Test Name 1"),
 			2, 3,
-			mancala.NewPlayer("Test Name 1"),
+			mancala.NewHuman("Test Name 1"),
 			[]int{2, 2, 2},
 			0,
 		},
@@ -37,8 +37,8 @@ func TestNewBoardSide(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ans := mancala.NewBoardSide(tt.player, tt.stonesPerPit, tt.pitsPerSide)
-			if *ans.Player != *tt.expectedPlayer {
+			ans := mancala.NewBoardSide(&tt.player, tt.stonesPerPit, tt.pitsPerSide)
+			if ans.Player != tt.expectedPlayer {
 				t.Errorf("got %v, want %v", ans.Player, tt.expectedPlayer)
 			}
 			if ans.Store != tt.expectedStore {
@@ -61,7 +61,7 @@ func TestBoardSide_GetStones(t *testing.T) {
 		{
 			"Chosen pit is empty",
 			&mancala.BoardSide{
-				Player: mancala.NewPlayer("Test Name 1"),
+				Player: mancala.NewHuman("Test Name 1"),
 				Pits:   []int{0, 4, 4, 4, 4, 4},
 				Store:  1,
 			},
@@ -70,7 +70,7 @@ func TestBoardSide_GetStones(t *testing.T) {
 		{
 			"Chosen pit has stones",
 			&mancala.BoardSide{
-				Player: mancala.NewPlayer("Test Name 1"),
+				Player: mancala.NewHuman("Test Name 1"),
 				Pits:   []int{4, 4, 4, 4, 4, 4},
 				Store:  1,
 			},

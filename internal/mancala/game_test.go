@@ -271,29 +271,29 @@ func TestGame_ExecuteMove(t *testing.T) {
 func TestNewGame(t *testing.T) {
 	tests := []struct {
 		name         string
-		player1      *mancala.Player
-		player2      *mancala.Player
+		player1      *mancala.Human
+		player2      *mancala.Human
 		stonesPerPit int
 		pitsPerSide  int
 	}{
 		{
 			name:         "Default game",
-			player1:      &mancala.Player{Name: "Player 1"},
-			player2:      &mancala.Player{Name: "Player 2"},
+			player1:      &mancala.Human{Name: "Player 1"},
+			player2:      &mancala.Human{Name: "Player 2"},
 			stonesPerPit: 4,
 			pitsPerSide:  6,
 		},
 		{
 			name:         "Preset scores",
-			player1:      &mancala.Player{Name: "Player 1", Score: 10},
-			player2:      &mancala.Player{Name: "Player 2", Score: 20},
+			player1:      &mancala.Human{Name: "Player 1", Score: 10},
+			player2:      &mancala.Human{Name: "Player 2", Score: 20},
 			stonesPerPit: 4,
 			pitsPerSide:  6,
 		},
 		{
 			name:         "Altered pits",
-			player1:      &mancala.Player{Name: "Player 1"},
-			player2:      &mancala.Player{Name: "Player 2"},
+			player1:      &mancala.Human{Name: "Player 1"},
+			player2:      &mancala.Human{Name: "Player 2"},
 			stonesPerPit: 6,
 			pitsPerSide:  10,
 		},

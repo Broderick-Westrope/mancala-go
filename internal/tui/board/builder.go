@@ -96,11 +96,11 @@ func (m Model) buildBoard() string {
 
 	// Format top name and build top border
 	if m.topBorder == "" {
-		m.buildTop(lipgloss.Width(board)-baseStyle.GetHorizontalPadding(), topSide.Player.Name)
+		m.buildTop(lipgloss.Width(board)-baseStyle.GetHorizontalPadding(), topSide.Player.GetName())
 	}
 	// Format top name and add top border
 	if m.bottomBorder == "" {
-		m.buildBottom(lipgloss.Width(board)-baseStyle.GetHorizontalPadding(), bottomSide.Player.Name)
+		m.buildBottom(lipgloss.Width(board)-baseStyle.GetHorizontalPadding(), bottomSide.Player.GetName())
 	}
 	// Add top and bottom borders to the board
 	board = lipgloss.JoinVertical(lipgloss.Left, m.topBorder, board, m.bottomBorder)
