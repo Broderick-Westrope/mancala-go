@@ -14,7 +14,6 @@ var (
 	pitTemplate     = ".-=-=-=-.\n|       |\n| %s |\n`-=-=-=-'"
 	topBorder       = ".=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-<-=-=-=-=-=-=-=-=-=-=-=-=-=-=-<-=-=-=-=-=-=-=-=-=-=-=-=-=-=-.\n|   %s                                                                   |"
 	bottomBorder    = "|                                                                   %s   |\n`=-=-=-=-=-=-=-=-=-=-=-=-=-=-=->-=-=-=-=-=-=-=-=-=-=-=-=-=-=->-=-=-=-=-=-=-=-=-=-=-=-=-=-bw'\n"
-	middleText      = "↺ Movement is counter-clockwise ↺"
 	nameMaxLength   = 20
 	numberMaxLength = 5
 )
@@ -61,7 +60,7 @@ func (m Model) buildBoard() string {
 	}
 
 	// Create the middle text
-	middle := lipgloss.PlaceHorizontal(lipgloss.Width(topPits), lipgloss.Center, middleText)
+	middle := lipgloss.PlaceHorizontal(lipgloss.Width(topPits), lipgloss.Center, m.stopwatch.View())
 
 	// Create the bottom row of pits
 	if !isTopTurn {

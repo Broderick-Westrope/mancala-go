@@ -3,29 +3,35 @@ package board
 import (
 	"github.com/Broderick-Westrope/mancala-go/internal/mancala"
 	"github.com/Broderick-Westrope/mancala-go/internal/tui/keys"
+	"github.com/Broderick-Westrope/mancala-go/internal/tui/stopwatch"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 type Model struct {
-	game   *mancala.Game
-	length int
-	cursor int
+	game      *mancala.Game
+	length    int
+	cursor    int
+	stopwatch stopwatch.Model
 }
 
 func InitialModel(game *mancala.Game) Model {
 	m := Model{
-		cursor: 0,
+		cursor:    0,
+		stopwatch: stopwatch.InitialModel(),
+		game:      game,
+		length:    len(game.Side1.Pits),
 	}
-	m.UpdateGame(game)
 	return m
 }
 
 func (m Model) Init() tea.Cmd {
-	return nil
+	return m.stopwatch.Init()
 }
 
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
+	var stopwatchCmd tea.Cmd
+
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch {
@@ -48,12 +54,9 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 		}
 	}
 
-	return m, nil
-}
+	m.stopwatch, stopwatchCmd = m.stopwatch.Update(msg)
 
-func (m *Model) UpdateGame(game *mancala.Game) {
-	m.game = game
-	m.length = len(game.Side1.Pits)
+	return m, stopwatchCmd
 }
 
 func (m Model) View() string {
