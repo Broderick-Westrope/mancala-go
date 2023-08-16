@@ -19,12 +19,8 @@ func TestNewPlayer(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ans := mancala.NewHuman(tt.playerName)
-			if ans.Name != tt.expectedName {
-				t.Errorf("got %s, want %s", ans.Name, tt.expectedName)
-			}
-			if ans.Score != tt.expectedScore {
-				t.Errorf("got %d, want %d", ans.Score, tt.expectedScore)
-			}
+			checkEquals(t, "Name", ans.Name, tt.expectedName)
+			checkEquals(t, "Score", ans.Score, tt.expectedScore)
 		})
 	}
 }

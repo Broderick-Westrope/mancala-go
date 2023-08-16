@@ -1,7 +1,6 @@
 package mancala_test
 
 import (
-	"reflect"
 	"testing"
 
 	"github.com/Broderick-Westrope/mancala-go/internal/mancala"
@@ -38,15 +37,9 @@ func TestNewBoardSide(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ans := mancala.NewBoardSide(tt.player, tt.stonesPerPit, tt.pitsPerSide)
-			if ans.Player != tt.expectedPlayer {
-				t.Errorf("got %v, want %v", ans.Player, tt.expectedPlayer)
-			}
-			if ans.Store != tt.expectedStore {
-				t.Errorf("got %v, want %v", ans.Store, tt.expectedStore)
-			}
-			if !reflect.DeepEqual(ans.Pits, tt.expectedPits) {
-				t.Errorf("got %v, want %v", ans.Pits, tt.expectedPits)
-			}
+			checkEquals(t, "Player", ans.Player, tt.expectedPlayer)
+			checkEquals(t, "Pits", ans.Pits, tt.expectedPits)
+			checkEquals(t, "Store", ans.Store, tt.expectedStore)
 		})
 	}
 }
@@ -119,9 +112,7 @@ func TestBoardSide_ArePitsEmpty(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ans := tt.side.ArePitsEmpty()
-			if ans != tt.expectedEmpty {
-				t.Errorf("got %v, want %v", ans, tt.expectedEmpty)
-			}
+			checkEquals(t, "Are Pits Empty", ans, tt.expectedEmpty)
 		})
 	}
 }
@@ -154,9 +145,7 @@ func TestBoardSide_GetScore(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ans := tt.side.GetScore()
-			if ans != tt.expectedScore {
-				t.Errorf("got %v, want %v", ans, tt.expectedScore)
-			}
+			checkEquals(t, "Score", ans, tt.expectedScore)
 		})
 	}
 }
@@ -183,12 +172,8 @@ func TestBoardSide_Capture(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ans := tt.side.Capture(tt.captureIndex)
-			if ans != tt.expectedCapturedStones {
-				t.Errorf("got %v, want %v", ans, tt.expectedCapturedStones)
-			}
-			if tt.side.Pits[tt.captureIndex] != 0 {
-				t.Errorf("got %v, want %d", tt.side.Pits[tt.captureIndex], 0)
-			}
+			checkEquals(t, "Captured Stones", ans, tt.expectedCapturedStones)
+			checkEquals(t, "Pit at Index", tt.side.Pits[tt.captureIndex], 0)
 		})
 	}
 }
