@@ -92,3 +92,7 @@ func (g *Game) AlternateTurn() {
 	}
 	g.Turn = Player1Turn
 }
+
+func (g *Game) IsOver() bool {
+	return g.Side1.ArePitsEmpty() || g.Side2.ArePitsEmpty()
+}
