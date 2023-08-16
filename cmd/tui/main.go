@@ -2,6 +2,9 @@ package main
 
 import (
 	"flag"
+	"fmt"
+	"log/slog"
+	"os"
 
 	"github.com/Broderick-Westrope/mancala-go/internal/mancala"
 	"github.com/Broderick-Westrope/mancala-go/internal/tui"
@@ -16,6 +19,15 @@ func main() {
 	stones := flag.Int("stones", 4, "Number of stones per pit")
 
 	flag.Parse()
+
+	if *pits < 1 {
+		slog.Error(fmt.Sprintf("invalid number of pits: %d", *pits))
+		os.Exit(1)
+	}
+	if *stones < 1 {
+		slog.Error(fmt.Sprintf("invalid number of stones: %d", *stones))
+		os.Exit(1)
+	}
 
 	var game *mancala.Game
 	switch *mode {
@@ -32,11 +44,15 @@ func main() {
 			player2 = mancala.NewPlayer("Player 2")
 		}
 		game = mancala.NewGame(player1, player2, *stones, *pits)
+	default:
+		slog.Error(fmt.Sprintf("invalid game mode: %s", *mode))
+		os.Exit(1)
 	}
 
 	m := tui.InitialModel(game)
 	p := tea.NewProgram(m)
 	if _, err := p.Run(); err != nil {
-		panic(err)
+		slog.Error(err.Error())
+		os.Exit(1)
 	}
 }
