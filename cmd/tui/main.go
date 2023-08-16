@@ -12,8 +12,8 @@ import (
 )
 
 func main() {
-	name1 := flag.String("name1", "Player 2", "Name of player 1")
-	name2 := flag.String("name2", "Player 1", "Name of player 2")
+	name1 := flag.String("name1", "Player 1", "Name of player 1")
+	name2 := flag.String("name2", "Player 2", "Name of player 2")
 	mode := flag.String("mode", "local", "Game type (local)")
 	pits := flag.Int("pits", 6, "Number of pits per side")
 	stones := flag.Int("stones", 4, "Number of stones per pit")
