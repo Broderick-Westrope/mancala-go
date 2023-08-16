@@ -9,10 +9,12 @@ import (
 )
 
 type Model struct {
-	game      *mancala.Game
-	length    int
-	cursor    int
-	stopwatch stopwatch.Model
+	game         *mancala.Game
+	length       int
+	cursor       int
+	stopwatch    stopwatch.Model
+	topBorder    string
+	bottomBorder string
 }
 
 func InitialModel(game *mancala.Game) Model {
@@ -22,6 +24,7 @@ func InitialModel(game *mancala.Game) Model {
 		game:      game,
 		length:    len(game.Side1.Pits),
 	}
+
 	return m
 }
 

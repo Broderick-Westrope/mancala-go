@@ -12,9 +12,6 @@ var (
 	storeTemplate   = ".-=-=-=-.\n|       |\n|       |\n|       |\n| %s |\n|       |\n|       |\n|       |\n`-=-=-=-'"
 	sideBorder      = "!\n¡\n|\n!\n:\n¡\n|\n!\n¡"
 	pitTemplate     = ".-=-=-=-.\n|       |\n| %s |\n`-=-=-=-'"
-	topBorder       = ".=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-<-=-=-=-=-=-=-=-=-=-=-=-=-=-=-<-=-=-=-=-=-=-=-=-=-=-=-=-=-=-.\n|   %s                                                                   |"
-	bottomBorder    = "|                                                                   %s   |\n`=-=-=-=-=-=-=-=-=-=-=-=-=-=-=->-=-=-=-=-=-=-=-=-=-=-=-=-=-=->-=-=-=-=-=-=-=-=-=-=-=-=-=-bw'\n"
-	nameMaxLength   = 20
 	numberMaxLength = 5
 )
 
@@ -97,24 +94,79 @@ func (m Model) buildBoard() string {
 	}
 	board = lipgloss.JoinHorizontal(lipgloss.Center, baseStyle.Render(sideBorder), leftStore, board, rightStore, baseStyle.Render(sideBorder))
 
-	// Format top name and add top border
-	name := topSide.Player.Name
-	if len(name) > nameMaxLength {
-		name = name[:nameMaxLength-3] + "..."
+	// Format top name and build top border
+	if m.topBorder == "" {
+		m.buildTop(lipgloss.Width(board)-baseStyle.GetHorizontalPadding(), topSide.Player.Name)
 	}
-	name = lipgloss.PlaceHorizontal(nameMaxLength, lipgloss.Left, name)
-	top := fmt.Sprintf(topBorder, name)
-	top = baseStyle.Render(top)
 	// Format top name and add top border
-	name = bottomSide.Player.Name
-	if len(name) > nameMaxLength {
-		name = name[:nameMaxLength-3] + "..."
+	if m.bottomBorder == "" {
+		m.buildBottom(lipgloss.Width(board)-baseStyle.GetHorizontalPadding(), bottomSide.Player.Name)
 	}
-	name = lipgloss.PlaceHorizontal(nameMaxLength, lipgloss.Right, name)
-	bottom := fmt.Sprintf(bottomBorder, name)
-	bottom = baseStyle.Render(bottom)
 	// Add top and bottom borders to the board
-	board = lipgloss.JoinVertical(lipgloss.Left, top, board, bottom)
+	board = lipgloss.JoinVertical(lipgloss.Left, m.topBorder, board, m.bottomBorder)
 
 	return board
+}
+
+func (m *Model) buildTop(width int, name string) {
+	var top string
+	firstThird := width / 3
+	secondThird := width - firstThird
+
+	for i := 0; i < width; i++ {
+		switch i {
+		case 0, width - 1:
+			top += "."
+		case firstThird, secondThird:
+			top += "<"
+		default:
+			if i%2 == 0 {
+				top += "-"
+			} else {
+				top += "="
+			}
+		}
+	}
+
+	nameWidth := width - 2
+	if len(name) > nameWidth {
+		name = name[:nameWidth-3] + "..."
+	}
+
+	name = lipgloss.PlaceHorizontal(nameWidth, lipgloss.Center, name)
+	name = lipgloss.JoinHorizontal(lipgloss.Center, "|", name, "|")
+	m.topBorder = lipgloss.JoinVertical(lipgloss.Left, baseStyle.Render(top), baseStyle.Render(name))
+}
+
+func (m *Model) buildBottom(width int, name string) {
+	nameWidth := width - 2
+	if len(name) > nameWidth {
+		name = name[:nameWidth-3] + "..."
+	}
+
+	name = lipgloss.PlaceHorizontal(nameWidth, lipgloss.Center, name)
+	name = lipgloss.JoinHorizontal(lipgloss.Center, "|", name, "|")
+
+	var bottom string
+	firstThird := width / 3
+	secondThird := width - firstThird
+
+	for i := 0; i < width; i++ {
+		switch i {
+		case 0:
+			bottom += "`"
+		case width - 1:
+			bottom += "'"
+		case firstThird, secondThird:
+			bottom += ">"
+		default:
+			if i%2 == 0 {
+				bottom += "-"
+			} else {
+				bottom += "="
+			}
+		}
+	}
+
+	m.bottomBorder = lipgloss.JoinVertical(lipgloss.Left, baseStyle.Render(name), baseStyle.Render(bottom))
 }
