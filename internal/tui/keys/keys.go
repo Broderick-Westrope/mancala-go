@@ -5,18 +5,17 @@ import (
 )
 
 type KeyMap struct {
-	Up        key.Binding
-	Down      key.Binding
-	Left      key.Binding
-	Right     key.Binding
-	Submit    key.Binding
-	Help      key.Binding
-	Quit      key.Binding
-	ForceQuit key.Binding
+	Up     key.Binding
+	Down   key.Binding
+	Left   key.Binding
+	Right  key.Binding
+	Submit key.Binding
+	Help   key.Binding
+	Quit   key.Binding
 }
 
 func (k KeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.Help, k.ForceQuit}
+	return []key.Binding{k.Help, k.Quit}
 }
 
 func (k KeyMap) FullHelp() [][]key.Binding {
@@ -24,7 +23,7 @@ func (k KeyMap) FullHelp() [][]key.Binding {
 		{k.Up, k.Down},
 		{k.Left, k.Right},
 		{k.Submit, k.Quit},
-		{k.Help, k.ForceQuit},
+		{k.Help},
 	}
 }
 
@@ -54,11 +53,7 @@ var Keys = KeyMap{
 		key.WithHelp("?", "toggle help"),
 	),
 	Quit: key.NewBinding(
-		key.WithKeys("q", "esc"),
-		key.WithHelp("q/escape", "quit"),
-	),
-	ForceQuit: key.NewBinding(
-		key.WithKeys("ctrl+c"),
-		key.WithHelp("Ctrl+C", "force quit"),
+		key.WithKeys("q", "esc", "ctrl+c"),
+		key.WithHelp("q/escape/ctrl+c", "quit"),
 	),
 }
