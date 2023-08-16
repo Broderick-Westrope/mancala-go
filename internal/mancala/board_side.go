@@ -12,7 +12,7 @@ type BoardSide struct {
 
 func NewBoardSide(player Player, stonesPerPit int, pitsPerSide int) *BoardSide {
 	side := &BoardSide{
-		Player: player,
+		Player: *player,
 		Store:  0,
 	}
 
