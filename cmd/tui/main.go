@@ -14,7 +14,7 @@ import (
 func main() {
 	name1 := flag.String("name1", "Player 1", "Name of player 1")
 	name2 := flag.String("name2", "Player 2", "Name of player 2")
-	mode := flag.String("mode", "local", "Game type (local)")
+	mode := flag.String("mode", "local", "Game type (local, minimax)")
 	pits := flag.Int("pits", 6, "Number of pits per side")
 	stones := flag.Int("stones", 4, "Number of stones per pit")
 
@@ -42,6 +42,15 @@ func main() {
 			player2 = mancala.NewHuman(*name2)
 		} else {
 			player2 = mancala.NewHuman("Player 2")
+		}
+		game = mancala.NewGame(player1, player2, *stones, *pits)
+	case "minimax":
+		var player1, player2 *mancala.MinimaxBot
+		player1 = mancala.NewMinimaxBot("Minimax Bot")
+		if *name2 != "" {
+			player2 = mancala.NewMinimaxBot(*name2)
+		} else {
+			player2 = mancala.NewMinimaxBot("Player 2")
 		}
 		game = mancala.NewGame(player1, player2, *stones, *pits)
 	default:
