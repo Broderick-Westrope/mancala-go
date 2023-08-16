@@ -18,7 +18,6 @@ func InitialModel(game *mancala.Game) Model {
 		cursor: 0,
 	}
 	m.UpdateGame(game)
-	println(m.length)
 	return m
 }
 
@@ -39,7 +38,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.cursor++
 			}
 		case key.Matches(msg, keys.Keys.Submit):
-			m.game.ExecuteMove(m.cursor)
+			if m.game.Turn == mancala.Player1Turn {
+				m.game.ExecuteMove((m.length - 1) - m.cursor)
+			} else {
+				m.game.ExecuteMove(m.cursor)
+			}
 		case key.Matches(msg, keys.Keys.Quit):
 			return m, tea.Quit
 		}
