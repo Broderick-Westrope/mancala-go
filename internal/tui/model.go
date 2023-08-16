@@ -46,13 +46,13 @@ func InitialModel(game *mancala.Game) model {
 	}
 
 	if game != nil {
-		m.SetupBoard(game)
+		m.StartGame(game)
 	}
 
 	return m
 }
 
-func (m *model) SetupBoard(game *mancala.Game) {
+func (m *model) StartGame(game *mancala.Game) {
 	m.board = board.InitialModel(game)
 	m.currentView = boardView
 }
@@ -92,7 +92,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case key.Matches(msg, keys.Keys.Submit):
 				switch m.cursor {
 				case 0:
-					break
+					p1 := mancala.NewPlayer("Player 1")
+					p2 := mancala.NewPlayer("Player 2")
+					game := mancala.NewGame(p1, p2, 4, 6)
+					m.StartGame(game)
 				case 1:
 					return m, tea.Quit
 				}
