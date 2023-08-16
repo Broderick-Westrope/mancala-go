@@ -6,7 +6,8 @@ import (
 )
 
 func main() {
-	p := tea.NewProgram(tui.InitialModel())
+	m := tui.InitialModel(nil)
+	p := tea.NewProgram(m)
 	if _, err := p.Run(); err != nil {
 		panic(err)
 	}
