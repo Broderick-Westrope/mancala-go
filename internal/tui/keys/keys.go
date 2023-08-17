@@ -5,8 +5,6 @@ import (
 )
 
 type KeyMap struct {
-	Up     key.Binding
-	Down   key.Binding
 	Left   key.Binding
 	Right  key.Binding
 	Submit key.Binding
@@ -20,7 +18,6 @@ func (k KeyMap) ShortHelp() []key.Binding {
 
 func (k KeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{k.Up, k.Down},
 		{k.Left, k.Right},
 		{k.Submit, k.Quit},
 		{k.Help},
@@ -28,14 +25,6 @@ func (k KeyMap) FullHelp() [][]key.Binding {
 }
 
 var Keys = KeyMap{
-	Up: key.NewBinding(
-		key.WithKeys("up", "k", "w"),
-		key.WithHelp("↑/k/w", "move up"),
-	),
-	Down: key.NewBinding(
-		key.WithKeys("down", "j", "s"),
-		key.WithHelp("↓/j/s", "move down"),
-	),
 	Left: key.NewBinding(
 		key.WithKeys("left", "h", "a"),
 		key.WithHelp("←/h/a", "move left"),
