@@ -56,7 +56,7 @@ func (bot *MinimaxBot) GetMove(game *Game) int {
 		if pit > 0 {
 			newSim := sim.copy()
 			newSim.ExecuteMove(i)
-			newValue := newSim.getMove(5, game.Turn)
+			newValue := newSim.getMove(15, game.Turn, math.MinInt, math.MaxInt)
 			if newValue > value {
 				index = i
 				value = newValue
@@ -67,30 +67,40 @@ func (bot *MinimaxBot) GetMove(game *Game) int {
 	return index
 }
 
-func (sim *Game) getMove(depth int, maximiser uint8) int {
+func (sim *Game) getMove(depth int, maximiser uint8, alpha, beta int) int {
 	if sim.IsOver() || depth == 0 {
 		return sim.Side1.Store - sim.Side2.Store
 	}
 	if sim.Turn == maximiser {
-		value := math.MinInt
+		bestValue := math.MinInt
 		for i, pit := range sim.Side1.Pits {
 			if pit > 0 {
 				newSim := sim.copy()
 				newSim.ExecuteMove(i)
-				value = max(value, newSim.getMove(depth-1, maximiser))
+				value := newSim.getMove(depth-1, maximiser, alpha, beta)
+				bestValue = max(bestValue, value)
+				alpha = max(alpha, bestValue)
+				if beta <= alpha {
+					break
+				}
 			}
 		}
-		return value
+		return bestValue
 	} else {
-		value := math.MaxInt
+		bestValue := math.MaxInt
 		for i, pit := range sim.Side2.Pits {
 			if pit > 0 {
 				newSim := sim.copy()
 				newSim.ExecuteMove(i)
-				value = max(value, newSim.getMove(depth-1, maximiser))
+				value := newSim.getMove(depth-1, maximiser, alpha, beta)
+				bestValue = min(bestValue, value)
+				beta = min(beta, bestValue)
+				if beta <= alpha {
+					break
+				}
 			}
 		}
-		return value
+		return bestValue
 	}
 }
 
