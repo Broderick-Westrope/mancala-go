@@ -41,7 +41,13 @@ Sleep 1
 Enter
 Sleep 2
 
+Type "q"
+
+Type "./tui -pits 3 -name1 Fry -name2 Bender"
+Enter
+Sleep 5
+
 Hide
-Ctrl+C
+Type "q"
 Type "rm tui"
 Enter
