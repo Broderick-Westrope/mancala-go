@@ -11,13 +11,13 @@ import (
 )
 
 type Model struct {
-	game               *mancala.Game
-	length             int
-	cursor             int
-	stopwatch          stopwatch.Model
-	topBorder          string
-	bottomBorder       string
-	isMovementDisabled bool
+	game          *mancala.Game
+	length        int
+	cursor        int
+	stopwatch     stopwatch.Model
+	topBorder     string
+	bottomBorder  string
+	isBotThinking bool
 }
 
 func InitialModel(game *mancala.Game) Model {
@@ -38,9 +38,9 @@ func (m Model) Init() tea.Cmd {
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	var stopwatchCmd tea.Cmd
 
-	if !m.isMovementDisabled {
+	if !m.isBotThinking {
 		if p1, ok := m.game.Side1.Player.(*mancala.MinimaxBot); ok && m.game.Turn == mancala.Player1Turn {
-			m.isMovementDisabled = true
+			m.isBotThinking = true
 			return m, getMinimaxMove(p1, m.game)
 		}
 	}
@@ -49,15 +49,15 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, keys.Keys.Left):
-			if m.cursor > 0 && !m.isMovementDisabled {
+			if m.cursor > 0 && !m.isBotThinking {
 				m.cursor--
 			}
 		case key.Matches(msg, keys.Keys.Right):
-			if m.cursor < m.length-1 && !m.isMovementDisabled {
+			if m.cursor < m.length-1 && !m.isBotThinking {
 				m.cursor++
 			}
 		case key.Matches(msg, keys.Keys.Submit):
-			if m.isMovementDisabled {
+			if m.isBotThinking {
 				break
 			}
 			cursor := m.cursor
@@ -77,7 +77,7 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 			slog.Error(err.Error())
 			panic(err)
 		}
-		m.isMovementDisabled = false
+		m.isBotThinking = false
 	}
 
 	m.stopwatch, stopwatchCmd = m.stopwatch.Update(msg)
@@ -86,7 +86,17 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	return m.buildBoard()
+	var message string
+
+	if m.game.IsOver() {
+		message = "Game over! "
+	} else if m.isBotThinking {
+		message = "Bot is thinking | "
+	}
+
+	message += m.stopwatch.View()
+
+	return m.buildBoard(message)
 }
 
 type moveMsg int

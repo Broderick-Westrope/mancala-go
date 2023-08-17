@@ -15,7 +15,7 @@ var (
 	numberMaxLength = 5
 )
 
-func (m Model) buildBoard() string {
+func (m Model) buildBoard(message string) string {
 	topSide := m.game.Side1
 	bottomSide := m.game.Side2
 	var isTopTurn bool
@@ -57,7 +57,7 @@ func (m Model) buildBoard() string {
 	}
 
 	// Create the middle text
-	middle := lipgloss.PlaceHorizontal(lipgloss.Width(topPits), lipgloss.Center, m.stopwatch.View())
+	middle := lipgloss.PlaceHorizontal(lipgloss.Width(topPits), lipgloss.Center, message)
 
 	// Create the bottom row of pits
 	if !isTopTurn {
