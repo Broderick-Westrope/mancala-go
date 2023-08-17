@@ -154,7 +154,7 @@ func TestGame_ExecuteMove(t *testing.T) {
 					Store: 3,
 				},
 				Side2: &mancala.BoardSide{
-					Pits:  []int{0, 0, 0, 0, 0, 0},
+					Pits:  []int{1, 0, 0, 0, 0, 0},
 					Store: 3,
 				},
 				Turn: mancala.Player1Turn,
@@ -166,7 +166,7 @@ func TestGame_ExecuteMove(t *testing.T) {
 					Store: 4,
 				},
 				Side2: &mancala.BoardSide{
-					Pits:  []int{1, 1, 1, 0, 0, 0},
+					Pits:  []int{2, 1, 1, 0, 0, 0},
 					Store: 3,
 				},
 				Turn: mancala.Player2Turn,
