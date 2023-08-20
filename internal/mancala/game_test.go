@@ -250,6 +250,33 @@ func TestGame_ExecuteMove(t *testing.T) {
 				Turn: mancala.Player1Turn,
 			},
 		},
+		{
+			name: "Game is over",
+			game: &mancala.Game{
+				Side1: &mancala.BoardSide{
+					Pits:  []int{0, 0, 0, 0, 0, 0},
+					Store: 2,
+				},
+				Side2: &mancala.BoardSide{
+					Pits:  []int{4, 4, 4, 4, 4, 4},
+					Store: 2,
+				},
+				Turn: mancala.Player2Turn,
+			},
+			pitIndex: 0,
+			expectedGame: &mancala.Game{
+				Side1: &mancala.BoardSide{
+					Pits:  []int{0, 0, 0, 0, 0, 0},
+					Store: 2,
+				},
+				Side2: &mancala.BoardSide{
+					Pits:  []int{4, 4, 4, 4, 4, 4},
+					Store: 2,
+				},
+				Turn: mancala.Player2Turn,
+			},
+			expectedAnErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
