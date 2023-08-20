@@ -20,6 +20,8 @@ type Model struct {
 	isBotThinking bool
 }
 
+type NotifyMsg struct{}
+
 func InitialModel(game *mancala.Game) Model {
 	m := Model{
 		cursor:    0,
@@ -36,7 +38,11 @@ func (m Model) Init() tea.Cmd {
 }
 
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
+	var cmds []tea.Cmd
 	var stopwatchCmd tea.Cmd
+
+	m.stopwatch, stopwatchCmd = m.stopwatch.Update(msg)
+	cmds = append(cmds, stopwatchCmd)
 
 	if !m.isBotThinking {
 		if p1, ok := m.game.Side1.Player.(*mancala.MinimaxBot); ok && m.game.Turn == mancala.Player1Turn {
@@ -68,6 +74,7 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 			if err != nil {
 				slog.Error(err.Error())
 			}
+			cmds = append(cmds, notify)
 		case key.Matches(msg, keys.Keys.Quit):
 			return m, tea.Quit
 		}
@@ -78,11 +85,10 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 			panic(err)
 		}
 		m.isBotThinking = false
+		cmds = append(cmds, notify)
 	}
 
-	m.stopwatch, stopwatchCmd = m.stopwatch.Update(msg)
-
-	return m, stopwatchCmd
+	return m, tea.Batch(cmds...)
 }
 
 func (m Model) View() string {
@@ -105,4 +111,8 @@ func getMinimaxMove(bot *mancala.MinimaxBot, game *mancala.Game) tea.Cmd {
 	return func() tea.Msg {
 		return moveMsg(bot.GetMove(game))
 	}
+}
+
+func notify() tea.Msg {
+	return NotifyMsg{}
 }
