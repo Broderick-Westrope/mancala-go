@@ -7,7 +7,9 @@ import (
 	"github.com/Broderick-Westrope/mancala-go/internal/tui/keys"
 	"github.com/Broderick-Westrope/mancala-go/internal/tui/stopwatch"
 	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type Model struct {
@@ -18,31 +20,38 @@ type Model struct {
 	topBorder     string
 	bottomBorder  string
 	isBotThinking bool
+	spinner       spinner.Model
 }
 
 type NotifyMsg struct{}
 
 func InitialModel(game *mancala.Game) Model {
+	s := spinner.New()
+	s.Spinner = spinner.Dot
+	s.Style = lipgloss.NewStyle().Foreground(lipgloss.Color("5"))
+
 	m := Model{
 		cursor:    0,
 		stopwatch: stopwatch.InitialModel(),
 		game:      game,
 		length:    len(game.Side1.Pits),
+		spinner:   s,
 	}
 
 	return m
 }
 
 func (m Model) Init() tea.Cmd {
-	return m.stopwatch.Init()
+	return tea.Batch(m.stopwatch.Init(), m.spinner.Tick)
 }
 
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	var cmds []tea.Cmd
-	var stopwatchCmd tea.Cmd
+	var stopwatchCmd, spinnerCmd tea.Cmd
 
+	m.spinner, spinnerCmd = m.spinner.Update(msg)
 	m.stopwatch, stopwatchCmd = m.stopwatch.Update(msg)
-	cmds = append(cmds, stopwatchCmd)
+	cmds = append(cmds, stopwatchCmd, spinnerCmd)
 
 	if !m.isBotThinking {
 		if p1, ok := m.game.Side1.Player.(*mancala.MinimaxBot); ok && m.game.Turn == mancala.Player1Turn {
@@ -97,7 +106,7 @@ func (m Model) View() string {
 	if m.game.IsOver() {
 		message = "Game over! "
 	} else if m.isBotThinking {
-		message = "Bot is thinking | "
+		message = m.spinner.View() + "Bot is thinking | "
 	}
 
 	message += m.stopwatch.View()
