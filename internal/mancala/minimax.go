@@ -50,7 +50,7 @@ func (bot *MinimaxBot) GetMove(game *Game) int {
 		Turn: game.Turn,
 	}
 
-	var index, value int
+	index, value := -1, math.MinInt
 
 	for i, pit := range sim.Side1.Pits {
 		if pit > 0 {
