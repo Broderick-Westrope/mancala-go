@@ -17,10 +17,12 @@ func initialStopwatchModel() stopwatchModel {
 	}
 }
 
+// Init is a Bubble Tea method to initialize the model.
 func (m stopwatchModel) Init() tea.Cmd {
 	return m.stopwach.Init()
 }
 
+// Update is a Bubble Tea method to update the model based on the given message.
 func (m stopwatchModel) Update(msg tea.Msg) (stopwatchModel, tea.Cmd) {
 	var cmd tea.Cmd
 	m.stopwach, cmd = m.stopwach.Update(msg)
@@ -28,6 +30,7 @@ func (m stopwatchModel) Update(msg tea.Msg) (stopwatchModel, tea.Cmd) {
 	return m, cmd
 }
 
+// View is a Bubble Tea method to render the current model.
 func (m stopwatchModel) View() string {
 	return m.stopwach.View()
 }

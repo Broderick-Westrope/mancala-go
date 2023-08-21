@@ -7,7 +7,6 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-// baseModel represents the base baseModel for the TUI. It contains a help baseModel and a board baseModel.
 type baseModel struct {
 	help  helpModel
 	board boardModel

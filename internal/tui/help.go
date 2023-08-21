@@ -18,6 +18,7 @@ func initialHelpModel() helpModel {
 	}
 }
 
+// Update is a Bubble Tea method to update the model based on the given message.
 func (m helpModel) Update(msg tea.Msg) (helpModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
@@ -33,6 +34,7 @@ func (m helpModel) Update(msg tea.Msg) (helpModel, tea.Cmd) {
 	return m, nil
 }
 
+// View is a Bubble Tea method to render the current model.
 func (m helpModel) View() string {
 	return helpStyle.Render(m.help.View(m.keys))
 }

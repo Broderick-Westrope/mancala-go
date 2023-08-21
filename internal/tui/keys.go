@@ -12,10 +12,12 @@ type keyMap struct {
 	Quit   key.Binding
 }
 
+// ShortHelp returns the key bindings that should be displayed by default.
 func (k keyMap) ShortHelp() []key.Binding {
 	return []key.Binding{k.Help, k.Quit}
 }
 
+// FullHelp returns the key bindings that should be displayed after the user has toggled help.
 func (k keyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
 		{k.Left, k.Right},

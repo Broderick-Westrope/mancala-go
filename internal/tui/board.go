@@ -37,10 +37,12 @@ func initialBoardModel(game *mancala.Game) boardModel {
 	return m
 }
 
+// Init is a Bubble Tea method to initialize the model.
 func (m boardModel) Init() tea.Cmd {
 	return tea.Batch(m.stopwatch.Init(), m.spinner.Tick)
 }
 
+// Update is a Bubble Tea method to update the model based on the given message.
 func (m boardModel) Update(msg tea.Msg) (boardModel, tea.Cmd) {
 	var cmds []tea.Cmd
 	var stopwatchCmd, spinnerCmd tea.Cmd
@@ -96,6 +98,7 @@ func (m boardModel) Update(msg tea.Msg) (boardModel, tea.Cmd) {
 	return m, tea.Batch(cmds...)
 }
 
+// View is a Bubble Tea method to render the current model.
 func (m boardModel) View() string {
 	var message string
 
