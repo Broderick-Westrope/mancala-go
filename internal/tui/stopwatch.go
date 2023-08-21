@@ -1,4 +1,4 @@
-package stopwatch
+package tui
 
 import (
 	"time"
@@ -7,27 +7,27 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-type Model struct {
+type stopwatchModel struct {
 	stopwach stopwatch.Model
 }
 
-func InitialModel() Model {
-	return Model{
+func initialStopwatchModel() stopwatchModel {
+	return stopwatchModel{
 		stopwach: stopwatch.NewWithInterval(time.Second),
 	}
 }
 
-func (m Model) Init() tea.Cmd {
+func (m stopwatchModel) Init() tea.Cmd {
 	return m.stopwach.Init()
 }
 
-func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
+func (m stopwatchModel) Update(msg tea.Msg) (stopwatchModel, tea.Cmd) {
 	var cmd tea.Cmd
 	m.stopwach, cmd = m.stopwach.Update(msg)
 
 	return m, cmd
 }
 
-func (m Model) View() string {
+func (m stopwatchModel) View() string {
 	return m.stopwach.View()
 }

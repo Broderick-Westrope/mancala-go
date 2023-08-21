@@ -1,29 +1,24 @@
-package help
+package tui
 
 import (
-	"github.com/Broderick-Westrope/mancala-go/internal/tui/keys"
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-type Model struct {
+type helpModel struct {
 	help help.Model
-	keys keys.KeyMap
+	keys keyMap
 }
 
-func InitialModel() Model {
-	return Model{
+func initialHelpModel() helpModel {
+	return helpModel{
 		help: help.New(),
-		keys: keys.Keys,
+		keys: keys,
 	}
 }
 
-func (m Model) Init() tea.Cmd {
-	return nil
-}
-
-func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
+func (m helpModel) Update(msg tea.Msg) (helpModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch {
@@ -38,6 +33,6 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	return m, nil
 }
 
-func (m Model) View() string {
+func (m helpModel) View() string {
 	return helpStyle.Render(m.help.View(m.keys))
 }

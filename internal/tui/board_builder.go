@@ -1,4 +1,4 @@
-package board
+package tui
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ var (
 	numberMaxLength = 5
 )
 
-func (m Model) buildBoard(message string) string {
+func (m boardModel) buildBoard(message string) string {
 	topSide := m.game.Side1
 	bottomSide := m.game.Side2
 	var isTopTurn bool
@@ -108,7 +108,7 @@ func (m Model) buildBoard(message string) string {
 	return board
 }
 
-func (m *Model) buildTop(width int, name string) {
+func (m *boardModel) buildTop(width int, name string) {
 	var top string
 	firstThird := width / 3
 	secondThird := width - firstThird
@@ -138,7 +138,7 @@ func (m *Model) buildTop(width int, name string) {
 	m.topBorder = lipgloss.JoinVertical(lipgloss.Left, baseStyle.Render(top), baseStyle.Render(name))
 }
 
-func (m *Model) buildBottom(width int, name string) {
+func (m *boardModel) buildBottom(width int, name string) {
 	nameWidth := width - 2
 	if len(name) > nameWidth {
 		name = name[:nameWidth-3] + "..."

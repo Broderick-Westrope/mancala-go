@@ -1,10 +1,10 @@
-package keys
+package tui
 
 import (
 	"github.com/charmbracelet/bubbles/key"
 )
 
-type KeyMap struct {
+type keyMap struct {
 	Left   key.Binding
 	Right  key.Binding
 	Submit key.Binding
@@ -12,11 +12,11 @@ type KeyMap struct {
 	Quit   key.Binding
 }
 
-func (k KeyMap) ShortHelp() []key.Binding {
+func (k keyMap) ShortHelp() []key.Binding {
 	return []key.Binding{k.Help, k.Quit}
 }
 
-func (k KeyMap) FullHelp() [][]key.Binding {
+func (k keyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
 		{k.Left, k.Right},
 		{k.Submit, k.Quit},
@@ -24,7 +24,7 @@ func (k KeyMap) FullHelp() [][]key.Binding {
 	}
 }
 
-var Keys = KeyMap{
+var keys = keyMap{
 	Left: key.NewBinding(
 		key.WithKeys("left", "h", "a"),
 		key.WithHelp("←/h/a", "move left"),
