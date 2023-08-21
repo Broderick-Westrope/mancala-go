@@ -3,8 +3,8 @@ Output ./docs/gifs/demo.gif
 Set Margin 30
 Set MarginFill "#6B50FF"
 Set BorderRadius 20
-Set Width 1600
-Set Height 700
+Set Width 1550
+Set Height 600
 Set FontFamily "FiraCode Nerd Font Mono"
 
 Hide
@@ -35,6 +35,20 @@ Right@500ms 1
 Sleep 1
 Enter
 Sleep 2
+
+Right@500ms 3
+Sleep 1
+Enter
+Sleep 2
+
+Type "q"
+
+Type "./tui -mode minimax"
+Enter
+Sleep 3
+
+Type "?"
+Sleep 15
 
 Right@500ms 3
 Sleep 1
