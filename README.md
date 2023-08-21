@@ -11,6 +11,8 @@ This is a little personal project I created whilst learning Golang to test the p
 
 I'm also taking the opportunity to try out a few Golang devtools like [Air](https://github.com/cosmtrek/air), [Delve](https://github.com/go-delve/delve), and (not Go specific) [DevContainers](https://code.visualstudio.com/docs/devcontainers/containers). I also recommend checking out [Lazygit](https://github.com/jesseduffield/lazygit) if you haven't already. It's by no means new to my toolkit, but it's awesome and made with Go.
 
+An opponent is included. It is built using the Minimax algorithm, and can be used by providing the flag `-mode minimax`.
+
 Any feedback is much appreciated :)
 
 ## Inspirations
@@ -21,7 +23,7 @@ Any feedback is much appreciated :)
 ## Roadmap
 
 Some more things I'm thinking of adding:
-- Algorithm opponents like MiniMax and/or Monte-Carlo.
+- Improved algorithm & performance for the Minimax opponent.
 - Remote play with SSH (maybe [Wish](https://github.com/charmbracelet/wish)), WebSockets, or something else (this stuff is not my forte). So far I'm leaning towards SSH because from what I can tell I'd need a central server for the WebSocket approach. 
 - REST API to interact with the core engine, which I'd then deploy :)
 
