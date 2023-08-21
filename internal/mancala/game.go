@@ -4,17 +4,20 @@ import (
 	"fmt"
 )
 
+// Game represents a game of Mancala. It contains a BoardSide for each player (Side1, Side2) and an unsigned integer (Turn) representing which player's turn it is.
 type Game struct {
 	Side1 *BoardSide
 	Side2 *BoardSide
 	Turn  uint8
 }
 
+// The value of Turn should always be one of these constants.
 const (
 	Player1Turn = 1
 	Player2Turn = 2
 )
 
+// NewGame creates a new game of Mancala with the given players, number of stones per pit, and number of pits per side.
 func NewGame(player1 Player, player2 Player, stonesPerPit int, pitsPerSide int) *Game {
 	return &Game{
 		Side1: NewBoardSide(player1, stonesPerPit, pitsPerSide),
@@ -23,6 +26,7 @@ func NewGame(player1 Player, player2 Player, stonesPerPit int, pitsPerSide int) 
 	}
 }
 
+// ExecuteMove executes a move for the current player. It returns an error if the game is over or if the given pit index is invalid.
 func (g *Game) ExecuteMove(pitIndex int) error {
 	if g.IsOver() {
 		return fmt.Errorf("game is over")
@@ -53,7 +57,6 @@ func (g *Game) ExecuteMove(pitIndex int) error {
 	pitCount := len(currentSide.Pits)
 	pitIndex++
 	for stones > 0 {
-		// TODO: try to use pitIndex++ instead of pitIndex = pitIndex + 1
 		for i := pitIndex; i < pitCount && stones > 0; i++ {
 			currentSide.Pits[i]++
 			stones--
@@ -89,6 +92,7 @@ func (g *Game) ExecuteMove(pitIndex int) error {
 	return nil
 }
 
+// AlternateTurn alternates the turn between players.
 func (g *Game) AlternateTurn() {
 	if g.Turn == Player1Turn {
 		g.Turn = Player2Turn
@@ -97,6 +101,7 @@ func (g *Game) AlternateTurn() {
 	g.Turn = Player1Turn
 }
 
+// IsOver returns true if the game is over, false otherwise.
 func (g *Game) IsOver() bool {
 	return g.Side1.ArePitsEmpty() || g.Side2.ArePitsEmpty()
 }
