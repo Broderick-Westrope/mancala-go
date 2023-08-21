@@ -69,6 +69,16 @@ func TestBoardSide_GetStones(t *testing.T) {
 			},
 			5, 4,
 		},
+		{
+			"Capture 5 stones, index 3",
+			&mancala.BoardSide{Pits: []int{1, 0, 7, 5, 9, 12}},
+			3, 5,
+		},
+		{
+			"Capture 9 stones, index 4",
+			&mancala.BoardSide{Pits: []int{1, 0, 7, 5, 9, 12}},
+			4, 9,
+		},
 	}
 
 	for _, tt := range tests {
@@ -146,34 +156,6 @@ func TestBoardSide_GetScore(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ans := tt.side.GetScore()
 			checkEquals(t, "Score", ans, tt.expectedScore)
-		})
-	}
-}
-
-func TestBoardSide_Capture(t *testing.T) {
-	tests := []struct {
-		name                   string
-		side                   *mancala.BoardSide
-		captureIndex           int
-		expectedCapturedStones int
-	}{
-		{
-			"Capture 5 stones, index 3",
-			&mancala.BoardSide{Pits: []int{1, 0, 7, 5, 9, 12}},
-			3, 5,
-		},
-		{
-			"Capture 9 stones, index 4",
-			&mancala.BoardSide{Pits: []int{1, 0, 7, 5, 9, 12}},
-			4, 9,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			ans := tt.side.Capture(tt.captureIndex)
-			checkEquals(t, "Captured Stones", ans, tt.expectedCapturedStones)
-			checkEquals(t, "Pit at Index", tt.side.Pits[tt.captureIndex], 0)
 		})
 	}
 }
