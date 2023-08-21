@@ -41,13 +41,6 @@ func (side *BoardSide) GetScore() int {
 	return score + side.Store
 }
 
-// Empties the pit and returns the number of stones in it
-func (side *BoardSide) Capture(pitIndex int) int {
-	stones := side.Pits[pitIndex]
-	side.Pits[pitIndex] = 0
-	return stones
-}
-
 func (side *BoardSide) ValidatePitIndex(pitIndex int) error {
 	if pitIndex < 0 || pitIndex >= len(side.Pits) {
 		return fmt.Errorf("invalid pit index: %d", pitIndex)

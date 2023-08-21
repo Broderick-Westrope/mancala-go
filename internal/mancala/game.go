@@ -63,8 +63,8 @@ func (g *Game) ExecuteMove(pitIndex int) error {
 
 			if currentSide == turnSide && stones == 0 && currentSide.Pits[i] == 1 {
 				// Perform capture
-				currentSide.Store += currentSide.Capture(i)
-				currentSide.Store += opposingSide.Capture(currentSide.GetOpposingPitIndex(i))
+				currentSide.Store += currentSide.GetStones(i)
+				currentSide.Store += opposingSide.GetStones(currentSide.GetOpposingPitIndex(i))
 				g.AlternateTurn()
 				return nil
 			}
