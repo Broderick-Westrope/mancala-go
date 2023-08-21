@@ -30,25 +30,22 @@ func main() {
 	}
 
 	var game *mancala.Game
+	var player1, player2 mancala.Player
 	switch *mode {
 	case "local":
-		var player1, player2 *mancala.Human
 		player1 = mancala.NewHuman(*name1)
 		player2 = mancala.NewHuman(*name2)
-		game = mancala.NewGame(player1, player2, *stones, *pits)
 	case "minimax":
-		var player1, player2 *mancala.MinimaxBot
 		player1 = mancala.NewMinimaxBot("Minimax Bot")
 		if *name2 == "Player 2" {
-			player2 = mancala.NewMinimaxBot("Player")
-		} else {
-			player2 = mancala.NewMinimaxBot(*name2)
+			*name2 = "Player"
 		}
-		game = mancala.NewGame(player1, player2, *stones, *pits)
+		player2 = mancala.NewMinimaxBot(*name2)
 	default:
 		slog.Error(fmt.Sprintf("invalid game mode: %s", *mode))
 		os.Exit(1)
 	}
+	game = mancala.NewGame(player1, player2, *stones, *pits)
 
 	m := tui.InitialModel(game)
 	p := tea.NewProgram(m)
