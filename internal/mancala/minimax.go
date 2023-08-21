@@ -4,23 +4,28 @@ import (
 	"math"
 )
 
+// MinimaxBot represents a bot that uses the minimax algorithm to determine its next move. It contains a name and a score.
 type MinimaxBot struct {
 	Name  string
 	Score int
 }
 
+// GetName returns the bot's name.
 func (bot *MinimaxBot) GetName() string {
 	return bot.Name
 }
 
+// GetScore returns the bot's score.
 func (bot *MinimaxBot) GetScore() int {
 	return bot.Score
 }
 
+// SetScore sets the bot's score.
 func (bot *MinimaxBot) SetScore(score int) {
 	bot.Score = score
 }
 
+// NewMinimaxBot creates a new MinimaxBot with the given name.
 func NewMinimaxBot(name string) *MinimaxBot {
 	return &MinimaxBot{
 		Name:  name,
@@ -28,6 +33,7 @@ func NewMinimaxBot(name string) *MinimaxBot {
 	}
 }
 
+// GetMove returns the bot's next move using the minimax algorithm.
 func (bot *MinimaxBot) GetMove(game *Game) int {
 	var maxSide, minSide *BoardSide
 	if game.Turn == Player1Turn {
@@ -67,6 +73,7 @@ func (bot *MinimaxBot) GetMove(game *Game) int {
 	return index
 }
 
+// getMove returns the best move for the given side using the minimax algorithm.
 func (sim *Game) getMove(depth int, maximiser uint8, alpha, beta int) int {
 	if sim.IsOver() || depth == 0 {
 		return sim.Side1.Store - sim.Side2.Store
@@ -104,6 +111,7 @@ func (sim *Game) getMove(depth int, maximiser uint8, alpha, beta int) int {
 	}
 }
 
+// copy returns a copy of the Game.
 func (sim *Game) copy() *Game {
 	newSim := &Game{
 		Side1: &BoardSide{
