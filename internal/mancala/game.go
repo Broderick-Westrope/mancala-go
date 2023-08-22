@@ -4,7 +4,9 @@ import (
 	"fmt"
 )
 
-// Game represents a game of Mancala. It contains a BoardSide for each player (Side1, Side2) and an unsigned integer (Turn) representing which player's turn it is.
+// Game represents a game of Mancala. It contains:
+// - a BoardSide for each player (Side1, Side2),
+// - and an unsigned integer (Turn) representing which player's turn it is.
 type Game struct {
 	Side1 *BoardSide
 	Side2 *BoardSide
@@ -26,7 +28,8 @@ func NewGame(player1 Player, player2 Player, stonesPerPit int, pitsPerSide int) 
 	}
 }
 
-// ExecuteMove executes a move for the current player. It returns an error if the game is over or if the given pit index is invalid.
+// ExecuteMove executes a move for the current player.
+// It returns an error if the game is over or if the given pit index is invalid.
 func (g *Game) ExecuteMove(pitIndex int) error {
 	if g.IsOver() {
 		return fmt.Errorf("game is over")

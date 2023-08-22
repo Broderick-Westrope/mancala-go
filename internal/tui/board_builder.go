@@ -92,7 +92,8 @@ func (m boardModel) buildBoard(message string) string {
 		leftStore = renderDisabled(leftStore)
 		rightStore = baseStyle.Render(rightStore)
 	}
-	board = lipgloss.JoinHorizontal(lipgloss.Center, baseStyle.Render(sideBorder), leftStore, board, rightStore, baseStyle.Render(sideBorder))
+	renderedSide := baseStyle.Render(sideBorder)
+	board = lipgloss.JoinHorizontal(lipgloss.Center, renderedSide, leftStore, board, rightStore, renderedSide)
 
 	// Format top name and build top border
 	if m.topBorder == "" {

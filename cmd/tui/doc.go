@@ -1,6 +1,7 @@
 /*
 Mancala-go is a command-line implementation of the game Mancala.
-It supports both local two player and single player game modes, where single player is versing one of the included algorithmic opponents.
+It supports both local two player and single player game modes.
+Single player is versing one of the included algorithmic opponents.
 The game is played in the terminal as an interactive text UI (TUI).
 The TUI is built using the Bubble Tea framework and some Bubbles components both built by Charm.
 

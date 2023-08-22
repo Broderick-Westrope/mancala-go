@@ -4,7 +4,10 @@ import (
 	"fmt"
 )
 
-// BoardSide represents one side of a Mancala board. It contains a Player, a slice of integers (Pits) representing the number of stones in each pit, and an integer (Store) representing the number of stones in the store.
+// BoardSide represents one side of a Mancala board. It contains:
+//   - a Player,
+//   - a slice of integers (Pits) representing the number of stones in each pit,
+//   - and an integer (Store) representing the number of stones in the store.
 type BoardSide struct {
 	Player Player
 	Pits   []int
@@ -60,7 +63,8 @@ func (side *BoardSide) GetStones(pitIndex int) int {
 	return stones
 }
 
-// GetOpposingPitIndex returns the index of the pit on the opposing side of the board. This takes into account the pits being reversed for the opposing player.
+// GetOpposingPitIndex returns the index of the pit on the opposing side of the board.
+// This takes into account the pits being reversed for the opposing player.
 func (side *BoardSide) GetOpposingPitIndex(pitIndex int) int {
 	return (len(side.Pits) - 1) - pitIndex
 }

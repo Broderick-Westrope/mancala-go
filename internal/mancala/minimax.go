@@ -6,7 +6,8 @@ import (
 	"math"
 )
 
-// MinimaxBot represents a bot that uses the minimax algorithm to determine its next move. It contains a name and a score.
+// MinimaxBot represents a bot that uses the minimax algorithm to determine its next move.
+// It contains a name and a score.
 type MinimaxBot struct {
 	Name  string
 	Score int
