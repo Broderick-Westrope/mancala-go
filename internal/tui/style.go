@@ -2,9 +2,13 @@ package tui
 
 import "github.com/charmbracelet/lipgloss"
 
-var helpStyle = lipgloss.NewStyle().Height(2)
+// Styles for the help text.
+var (
+	helpHeight = 2
+	helpStyle  = lipgloss.NewStyle().Height(helpHeight)
+)
 
-// Styles for the board
+// Styles for the board.
 var (
 	baseStyle      = lipgloss.NewStyle().Padding(0, 1)
 	renderSelected = baseStyle.Copy().Foreground(lipgloss.Color("5")).Bold(true).Render

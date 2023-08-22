@@ -7,28 +7,28 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-type baseModel struct {
+type BaseModel struct {
 	help  helpModel
 	board boardModel
 }
 
 // InitialModel creates a new model with the given game.
-func InitialModel(game *mancala.Game) *baseModel {
-	return &baseModel{
+func InitialModel(game *mancala.Game) *BaseModel {
+	return &BaseModel{
 		help:  initialHelpModel(),
 		board: initialBoardModel(game),
 	}
 }
 
 // Init is a Bubble Tea method to initialize the model.
-func (m baseModel) Init() tea.Cmd {
+func (m BaseModel) Init() tea.Cmd {
 	boardCmd := m.board.Init()
 
 	return tea.Batch(boardCmd)
 }
 
 // Update is a Bubble Tea method to update the model based on the given message.
-func (m baseModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m BaseModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd, helpCmd, boardCmd tea.Cmd
 
 	if v, ok := msg.(tea.KeyMsg); ok && key.Matches(v, keys.Quit) {
@@ -43,6 +43,6 @@ func (m baseModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 // View is a Bubble Tea method to render the current model.
-func (m baseModel) View() string {
+func (m BaseModel) View() string {
 	return lipgloss.JoinVertical(lipgloss.Left, m.board.View(), m.help.View())
 }

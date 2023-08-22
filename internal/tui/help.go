@@ -22,11 +22,9 @@ func initialHelpModel() helpModel {
 func (m helpModel) Update(msg tea.Msg) (helpModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		switch {
-		case key.Matches(msg, m.keys.Help):
+		if key.Matches(msg, m.keys.Help) {
 			m.help.ShowAll = !m.help.ShowAll
 		}
-
 	case tea.WindowSizeMsg:
 		m.help.Width = msg.Width
 	}

@@ -8,14 +8,13 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-var (
-	storeTemplate   = ".-=-=-=-.\n|       |\n|       |\n|       |\n| %s |\n|       |\n|       |\n|       |\n`-=-=-=-'"
-	sideBorder      = "!\n¡\n|\n!\n:\n¡\n|\n!\n¡"
-	pitTemplate     = ".-=-=-=-.\n|       |\n| %s |\n`-=-=-=-'"
-	numberMaxLength = 5
-)
+const third = 1.0 / 3.0
 
 func (m boardModel) buildBoard(message string) string {
+	numberMaxLength := 5
+	pitTemplate := ".-=-=-=-.\n|       |\n| %s |\n`-=-=-=-'"
+	storeTemplate := ".-=-=-=-.\n|       |\n|       |\n|       |\n| %s |\n|       |\n|       |\n|       |\n`-=-=-=-'"
+
 	topSide := m.game.Side1
 	bottomSide := m.game.Side2
 	var isTopTurn bool
@@ -92,16 +91,17 @@ func (m boardModel) buildBoard(message string) string {
 		leftStore = renderDisabled(leftStore)
 		rightStore = baseStyle.Render(rightStore)
 	}
-	renderedSide := baseStyle.Render(sideBorder)
+	renderedSide := baseStyle.Render("!\n¡\n|\n!\n:\n¡\n|\n!\n¡")
 	board = lipgloss.JoinHorizontal(lipgloss.Center, renderedSide, leftStore, board, rightStore, renderedSide)
 
 	// Format top name and build top border
+	borderWidth := 2
 	if m.topBorder == "" {
-		m.buildTop(lipgloss.Width(board)-baseStyle.GetHorizontalPadding(), topSide.Player.GetName())
+		m.buildTop(lipgloss.Width(board)-baseStyle.GetHorizontalPadding(), borderWidth, topSide.Player.GetName())
 	}
 	// Format top name and add top border
 	if m.bottomBorder == "" {
-		m.buildBottom(lipgloss.Width(board)-baseStyle.GetHorizontalPadding(), bottomSide.Player.GetName())
+		m.buildBottom(lipgloss.Width(board)-baseStyle.GetHorizontalPadding(), borderWidth, bottomSide.Player.GetName())
 	}
 	// Add top and bottom borders to the board
 	board = lipgloss.JoinVertical(lipgloss.Left, m.topBorder, board, m.bottomBorder)
@@ -109,9 +109,9 @@ func (m boardModel) buildBoard(message string) string {
 	return board
 }
 
-func (m *boardModel) buildTop(width int, name string) {
+func (m *boardModel) buildTop(width, borderWidth int, name string) {
 	var top string
-	firstThird := width / 3
+	firstThird := int(float64(width) * third)
 	secondThird := width - firstThird
 
 	for i := 0; i < width; i++ {
@@ -129,7 +129,7 @@ func (m *boardModel) buildTop(width int, name string) {
 		}
 	}
 
-	nameWidth := width - 2
+	nameWidth := width - borderWidth
 	if len(name) > nameWidth {
 		name = name[:nameWidth-3] + "..."
 	}
@@ -139,8 +139,8 @@ func (m *boardModel) buildTop(width int, name string) {
 	m.topBorder = lipgloss.JoinVertical(lipgloss.Left, baseStyle.Render(top), baseStyle.Render(name))
 }
 
-func (m *boardModel) buildBottom(width int, name string) {
-	nameWidth := width - 2
+func (m *boardModel) buildBottom(width, borderWidth int, name string) {
+	nameWidth := width - borderWidth
 	if len(name) > nameWidth {
 		name = name[:nameWidth-3] + "..."
 	}
@@ -149,7 +149,7 @@ func (m *boardModel) buildBottom(width int, name string) {
 	name = lipgloss.JoinHorizontal(lipgloss.Center, "|", name, "|")
 
 	var bottom string
-	firstThird := width / 3
+	firstThird := int(float64(width) * third)
 	secondThird := width - firstThird
 
 	for i := 0; i < width; i++ {
