@@ -113,6 +113,7 @@ linters-settings:
       - prometheus.ExponentialBuckets
       - prometheus.ExponentialBucketsRange
       - prometheus.LinearBuckets
+      - flag.Int
 
   gomodguard:
     blocked:
@@ -204,7 +205,6 @@ linters:
     - forbidigo # forbids identifiers
     - funlen # tool for detection of long functions
     - gocheckcompilerdirectives # validates go compiler directive comments (//go:)
-    - gochecknoglobals # checks that no global variables exist
     - gochecknoinits # checks that no init functions are present in Go code
     - gocognit # computes and checks the cognitive complexity of functions
     - goconst # finds repeated strings that could be replaced by a constant
