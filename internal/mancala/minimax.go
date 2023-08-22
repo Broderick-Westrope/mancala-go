@@ -1,6 +1,8 @@
 package mancala
 
 import (
+	"fmt"
+	"log/slog"
 	"math"
 )
 
@@ -61,7 +63,10 @@ func (bot *MinimaxBot) GetMove(game *Game) int {
 	for i, pit := range sim.Side1.Pits {
 		if pit > 0 {
 			newSim := sim.copy()
-			newSim.ExecuteMove(i)
+			err := newSim.ExecuteMove(i)
+			if err != nil {
+				slog.Error(fmt.Sprintf("Error executing move: %s", err.Error()))
+			}
 			newValue := newSim.getMove(15, game.Turn, math.MinInt, math.MaxInt)
 			if newValue > value {
 				index = i
@@ -83,7 +88,10 @@ func (sim *Game) getMove(depth int, maximiser uint8, alpha, beta int) int {
 		for i, pit := range sim.Side1.Pits {
 			if pit > 0 {
 				newSim := sim.copy()
-				newSim.ExecuteMove(i)
+				err := newSim.ExecuteMove(i)
+				if err != nil {
+					slog.Error(fmt.Sprintf("Error executing move: %s", err.Error()))
+				}
 				value := newSim.getMove(depth-1, maximiser, alpha, beta)
 				bestValue = max(bestValue, value)
 				alpha = max(alpha, bestValue)
@@ -98,7 +106,10 @@ func (sim *Game) getMove(depth int, maximiser uint8, alpha, beta int) int {
 		for i, pit := range sim.Side2.Pits {
 			if pit > 0 {
 				newSim := sim.copy()
-				newSim.ExecuteMove(i)
+				err := newSim.ExecuteMove(i)
+				if err != nil {
+					slog.Error(fmt.Sprintf("Error executing move: %s", err.Error()))
+				}
 				value := newSim.getMove(depth-1, maximiser, alpha, beta)
 				bestValue = min(bestValue, value)
 				beta = min(beta, bestValue)
